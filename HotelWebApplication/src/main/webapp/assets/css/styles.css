@@ -1,0 +1,98 @@
+body{
+    background-color: #F5F5F5;
+    padding:0px;
+    margin:0px;
+    font-family: "Montserrat";
+}
+#navBar{
+    display: flex;
+    flex-direction: row;
+}
+.homePhoto{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height:auto;
+}
+.pageContent{
+    margin:0% 2% 2% 2%;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.col{
+    display: flex;
+    flex-direction: column;
+}
+.hidden{
+    display: none;
+}
+.searchBarDestinations{
+    position: relative;
+    z-index: 2;
+    background-color: #EFEFEF;
+    justify-self: center;
+    padding: 1px 20px 20px 20px;
+    border-radius: 10px;
+    margin-top:-20px;
+    box-shadow:0px 10px 10px #CDCDCD;
+}
+.inputDestinations{
+    background-color: white;
+    padding:10px;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+}
+.inputFieldsDestinations{
+    border:none;
+}
+.buttons{
+    background-color: #17A0C6;
+    border:none;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.param{
+    padding: 0px 20px;
+}
+.star{
+    border:none;
+    background-color: white;
+    cursor: pointer;
+}
+.results{
+    display: flex;
+    justify-content: center;
+}
+.hotelWidget{
+    background-color: white;
+    border: 10px;
+    margin:20px;
+}
+.groupRoomsWidgets{
+    margin: 20px;
+}
+.widgetRow{
+    justify-content: center;
+}
+.roomWidget{
+    display: flex;
+    background-color: white;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding:20px;
+    margin: 0 20px 0 20px;
+    width:25%;
+}
+.bookRoomButton{
+    width: 70%;
+    align-self: center;
+}
