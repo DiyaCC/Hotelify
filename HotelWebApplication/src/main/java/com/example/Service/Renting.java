@@ -1,5 +1,7 @@
 package Service;
 
+import java.sql.Timestamp;
+
 public class Renting {
 
     private int employee_id;

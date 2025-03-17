@@ -1,5 +1,7 @@
 package Service;
 
+import java.sql.Timestamp;
+
 public class Booking {
 
     private int customer_id;
