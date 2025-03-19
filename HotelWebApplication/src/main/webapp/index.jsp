@@ -5,7 +5,8 @@
     </head>
     <body>
         <div id="navBar">
-            <h2>HOTELS</h2>
+            <h3>HOTELS</h3>
+            <a href="employee.jsp">EmployeePage</a>
         </div>
         <div id="home">
             <img src="assets/Images/HomePhoto.png" class="homePhoto">

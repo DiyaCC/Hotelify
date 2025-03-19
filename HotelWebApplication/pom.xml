@@ -20,6 +20,15 @@
       <artifactId>postgresql</artifactId>
       <version>42.7.5</version>
     </dependency>
+
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version> <!-- Latest version -->
+      <scope>provided</scope>
+    </dependency>
+
+
   </dependencies>
 
 
