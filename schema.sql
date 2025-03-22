@@ -142,7 +142,7 @@ CREATE TABLE Room_Amenity (
 
 -- Create table: Person
 CREATE TABLE Person (
-    person_id SERIAL,
+    SSN INT,
     --
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -151,32 +151,31 @@ CREATE TABLE Person (
     city VARCHAR(50),
     state CHAR(2),
     zip CHAR(6),
-    SSN INT,
     --
-    PRIMARY KEY (person_id)
+    PRIMARY KEY (SSN)
 );
 
 -- Create table: Customer
 CREATE TABLE Customer (
     customer_id SERIAL,
     --
-    person_id INT NOT NULL,
+    SSN INT NOT NULL,
     registration_date DATE DEFAULT CURRENT_DATE,
     --
     PRIMARY KEY (customer_id),
-    FOREIGN KEY (person_id) REFERENCES Person(person_id) ON DELETE CASCADE
+    FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE
 );
 
 -- Create table: Employee
 CREATE TABLE Employee (
     employee_id SERIAL,
     --
-    person_id INT NOT NULL,
+    SSN INT NOT NULL,
     hotel_id INT NOT NULL,
     salary DECIMAL(7,2),
     --
     PRIMARY KEY (employee_id),
-    FOREIGN KEY (person_id) REFERENCES Person(person_id) ON DELETE CASCADE,
+    FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     FOREIGN KEY (hotel_id) REFERENCES Hotel(hotel_id) ON DELETE CASCADE
 );
 
