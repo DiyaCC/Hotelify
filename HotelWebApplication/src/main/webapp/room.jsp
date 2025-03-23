@@ -54,6 +54,7 @@
           else {
             widget.innerHTML=data;
           }
+          document.getElementById("roomAvailabilityStatement").innerHTML=`Rooms Available in <%= hotel_name %> from ${checkin} to ${checkout}`
         }).catch(error => console.error("Error finding rooms:", error))
       }
     </script>
@@ -68,7 +69,7 @@
 <div id="room">
   <img src="assets/Images/room2.png" class="homePhoto"/>
   <div class="pageContent" id =<%=hotel_id%> >
-    <h2>Rooms Available in <%= hotel_name %> from <%= String.valueOf(checkin) %> to <%= String.valueOf(checkout)%></h2>
+    <h2 id="roomAvailabilityStatement">Rooms Available in <%= hotel_name %> from <%= String.valueOf(checkin) %> to <%= String.valueOf(checkout)%></h2>
     <div class="searchBarDestinations">
       <h2>Dates and Preferences</h2>
       <div class="row">
