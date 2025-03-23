@@ -6,7 +6,9 @@
     <body>
         <div id="navBar">
             <h3>HOTELS</h3>
-            <a href="employee.jsp">EmployeePage</a>
+            <a href="employee.jsp">Employee Page</a>
+            <br>
+            <a href="EnterSSN.jsp">Book a Room</a>
         </div>
         <div id="home">
             <img src="assets/Images/HomePhoto.png" class="homePhoto">

@@ -10,7 +10,6 @@
   <script>
     function loadBookings() {
       fetch("availableRooms").then(response => response.text()).then( data => {
-        console.log(data)
         document.getElementById("roomSelect").innerHTML = data;
       }).catch(error => console.error("Error finding rooms:", error))
     }
