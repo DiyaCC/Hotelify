@@ -15,7 +15,7 @@ public class AvailableHotelsServlet extends HttpServlet {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Thanks$%^g1ving";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -89,7 +89,9 @@ public class AvailableHotelsServlet extends HttpServlet {
                         "                                        <h3>Hilton express</h3>\n" +
                         "                                    </div>\n" +
                         "                                    <div class=\"col\">\n" +
+                        "                                        <a href='room.jsp?hotel_id="+String.valueOf(rs.getInt("hotel_id"))+"&hotel_name="+String.valueOf(rs.getString("hotel_name"))+"&checkin="+String.valueOf(checkin)+"&checkout="+String.valueOf(checkout)+"&rooms="+String.valueOf(room_val)+"'>"+
                         "                                        <button class=\"buttons\">View Rooms</button>\n" +
+                        "                                        </a>"+
                         "                                    </div>\n" +
                         "                                </div>\n" +
                         "                            </div>");

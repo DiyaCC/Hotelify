@@ -2,6 +2,77 @@
     <head>
         <link rel="stylesheet" href="assets/css/styles.css" >
         <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+        <script>
+            function searchForHotels(){
+                    document.getElementById("invalidInputDestination").classList.add("hidden")
+                    document.getElementById("invalidInputCheckin").classList.add("hidden")
+                    document.getElementById("invalidInputCheckout").classList.add("hidden")
+                    document.getElementById("invalidInputRooms").classList.add("hidden")
+                    var destination = document.getElementById("destination").value;
+                    var checkin = document.getElementById("Check-in").value;
+                    var checkout = document.getElementById("Check-out").value;
+                    var rooms = document.getElementById("Rooms").value;
+                    var stars = document.getElementById("stardrop").value;
+
+                    var valid = validate(destination, checkin, checkout, rooms)
+                    if (valid){
+                        var url = `availableHotels?city=${encodeURIComponent(destination)}&rooms=${encodeURIComponent(rooms)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&star=${encodeURIComponent(stars)}`
+                        fetch(url).then(response => response.text()).then(data => {
+                            if (!data){
+                                const notFound = `<div class="widgetRow row"><h4>No Results Found :(</h4></div>`
+                                document.getElementById("results").innerHTML = notFound;
+
+                            } else {
+                                document.getElementById("results").innerHTML = data;
+                            }
+
+                        }).catch(error => console.error("Error finding rooms:", error))
+                    }
+            }
+            function validate(destination, checkin, checkout, rooms){
+                var valid = true;
+                if (typeof destination !== "string" || destination===""){
+                    valid=false;
+                    document.getElementById("invalidInputDestination").classList.remove("hidden")
+                }
+                try{
+                    new Date(checkin);
+                    if (checkin===""){
+                        document.getElementById("invalidInputCheckin").classList.remove("hidden")
+                    }
+                } catch {
+                    valid=false;
+                    document.getElementById("invalidInputCheckin").classList.remove("hidden")
+                }
+                try {
+                    new Date(checkout);
+                    if (checkout===""){
+                        document.getElementById("invalidInputCheckout").classList.remove("hidden")
+                    }
+                } catch {
+                    valid=false;
+                    document.getElementById("invalidInputCheckout").classList.remove("hidden")
+                }
+                if (rooms === ""){
+                    valid=false;
+                    document.getElementById("invalidInputRooms").classList.remove("hidden")
+                } else {
+                    try {
+                        var roomsInt = parseInt(rooms)
+                        if (roomsInt<=0){
+                            valid=false;
+                            document.getElementById("invalidInputRooms").classList.remove("hidden")
+                        }
+                    } catch {
+                        valid=false;
+                        document.getElementById("invalidInputRooms").classList.remove("hidden")
+                    }
+                }
+                return valid
+
+            }
+
+        </script>
     </head>
     <body>
         <div id="navBar">
@@ -19,20 +90,32 @@
                     </div>
                     <div class="row inputDestinations">
                         <div class="col param">
-                            <label for="destination">Destination</label>
+                            <div class="row">
+                                <img src="assets/Images/Error.png" class="hidden invalidInput" id="invalidInputDestination">
+                                <label for="destination">Destination</label>
+                            </div>
                             <input type="text" id="destination" class="inputFieldsDestinations" placeholder="Punta Cana"/>
                         </div>
                         <div class="col param">
-                            <label for="Check-in">Check-in</label>
+                            <div class="row">
+                                <img src="assets/Images/Error.png" class="hidden invalidInput" id="invalidInputCheckin">
+                                <label for="Check-in">Check-in</label>
+                            </div>
                             <input type="text" id="Check-in" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col param">
-                            <label for="Check-out">Check-out</label>
+                            <div class="row">
+                                <img src="assets/Images/Error.png" class="hidden invalidInput" id="invalidInputCheckout">
+                                <label for="Check-out">Check-out</label>
+                            </div>
                             <input type="text" id="Check-out" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col param">
-                            <label for="Rooms">Guests</label>
-                            <input type="text" id="Rooms" class="inputFieldsDestinations" placeholder="2"/>
+                            <div class="row">
+                                <img src="assets/Images/Error.png" class="hidden invalidInput" id="invalidInputRooms">
+                                <label for="Rooms">Rooms</label>
+                            </div>
+                            <input type="text" id="Rooms" class="inputFieldsDestinations" placeholder="1"/>
                         </div>
                         <div class="col param">
                             <label for="Star Rating">Star Rating</label>
@@ -47,90 +130,11 @@
                             </div>
                         </div>
                         <div class="col param">
-                            <button class="buttons">Search</button>
+                            <button class="buttons" id="searchForHotels" onClick="searchForHotels()">Search</button>
                         </div>
                     </div>
                 </div>
-                <div class="results">
-                    <div class="row">
-                        <div class="col">
-                            <div class="hotelWidget">
-                                <img src="assets/Images/Hotelroom.png"/>
-                                <div class="row">
-                                    <div class="col">
-                                        <h2>Hotel California</h2>
-                                        <h3>Hilton express</h3>
-                                    </div>
-                                    <div class="col">
-                                        <button class="buttons">View Rooms</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="hotelWidget">
-                                <img src="assets/Images/Hotelroom.png"/>
-                                <div class="row">
-                                    <div class="col">
-                                        <h2>Hotel California</h2>
-                                        <h3>Hilton express</h3>
-                                    </div>
-                                    <div class="col">
-                                        <button class="buttons">View Rooms</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="room" class="hidden">
-            <img src="assets/Images/room2.png" class="homePhoto"/>
-            <div class="pageContent" >
-                <h2>Rooms Available in {Hotel} from {Checkin} to {Checkout}</h2>
-                <div class="searchBarDestinations">
-                    <h2>Dates and Preferences</h2>
-                    <div class="row">
-                        <div class="col param">
-                            <label for="Check-in-room">Check-in</label>
-                            <input type="text" id="Check-in-room" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
-                        </div>
-                        <div class="col param">
-                            <label for="Check-out-room">Check-out</label>
-                            <input type="text" id="Check-out-room" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
-                        </div>
-                        <div class="col param">
-                            <label for="Rooms-room">Guests</label>
-                            <input type="text" id="Rooms-room" class="inputFieldsDestinations" placeholder="2"/>
-                        </div>
-                        <div class="col param">
-                            <button class="buttons">Change Search</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="groupRoomsWidgets">
-                    <div class="widgetRow row">
-                        <div class="roomWidget col">
-                            <h2>Standard Room</h2>
-                            <h4>Free WIFI | TV | Air Conditioning</h4>
-                            <h4>$200 per night</h4>
-                            <button class="buttons bookRoomButton">Book Now</button>
-                        </div>
-                        <div class="roomWidget col">
-                            <h2>Standard Room</h2>
-                            <h4>Free WIFI | TV | Air Conditioning</h4>
-                            <h4>$200 per night</h4>
-                            <button class="buttons bookRoomButton">Book Now</button>
-                        </div>
-                        <div class="roomWidget col">
-                            <h2>Standard Room</h2>
-                            <h4>Free WiFi | TV | Air Conditioning</h4>
-                            <h4>$200 per night</h4>
-                            <button class="buttons bookRoomButton">Book Now</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="results"></div>
             </div>
         </div>
     </body>
