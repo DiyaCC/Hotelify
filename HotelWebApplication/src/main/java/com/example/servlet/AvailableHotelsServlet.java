@@ -42,7 +42,7 @@ public class AvailableHotelsServlet extends HttpServlet {
                     "\tselect h.hotel_name, h.hotel_id, h.num_rooms, m.count, h.star_rating, h.city\n" +
                     "\tfrom (select hotel_id, count(booking_id)\n" +
                     "\t\t\tfrom booking\n" +
-                    "\t\t\twhere NOT cancelled and NOT ((?, ?) OVERLAPS (checkin_date, checkout_date))" +
+                    "\t\t\twhere NOT cancelled and ((?, ?) OVERLAPS (checkin_date, checkout_date))" +
                     "\t\t\tgroup by hotel_id, booking_id) as m\n" +
                     "\tright outer join hotel h\n" +
                     "\ton h.hotel_id = m.hotel_id;\n" +
@@ -63,7 +63,6 @@ public class AvailableHotelsServlet extends HttpServlet {
 
             // Debugging: Check if availableRooms has data
             Statement debugStmt = con.createStatement();
-            ResultSet debugRs = debugStmt.executeQuery("SELECT * FROM availableRooms;");
 
             String sql_query = "SELECT * from availableRooms WHERE city=? and star_rating>=? and available_rooms>=?;";
             PreparedStatement stmt4 = con.prepareStatement(sql_query);
@@ -74,6 +73,7 @@ public class AvailableHotelsServlet extends HttpServlet {
             int i = 0;
 
             while (rs.next()) {
+                System.out.println(i);
                 if (i%3==0) {
                     out.println("<div class='row widgetRow'>");
                 }
