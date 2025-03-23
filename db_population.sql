@@ -1,5 +1,3 @@
-
-
 -- Insert sample data into Hotel_Chain (5 well-known chains)
 INSERT INTO Hotel_Chain (chain_name, num_hotels) VALUES
 ('Marriott', 8),
@@ -112,23 +110,23 @@ INSERT INTO Room_Amenity (room_type_id, amenity_id) VALUES
 (5, 4);
 
 -- Insert sample data into Person (Basic person details)
-INSERT INTO Person (first_name, last_name, street_number, street_name, city, state, zip, SSN) VALUES
-('Alice', 'Johnson', '123', 'Main St', 'New York', 'NY', '10001', 123456789),
-('Bob', 'Smith', '456', '2nd Ave', 'Los Angeles', 'CA', '90001', 234567890),
-('Charlie', 'Brown', '789', 'Market St', 'Chicago', 'IL', '60601', 345678901),
-('David', 'Lee', '101', 'Broadway', 'Miami', 'FL', '33139', 456789012),
-('Emily', 'Davis', '202', 'Park Ave', 'San Francisco', 'CA', '94103', 567890123);
+INSERT INTO Person (SSN, first_name, last_name, street_number, street_name, city, state, zip) VALUES
+(123456789, 'Alice', 'Johnson', '123', 'Main St', 'New York', 'NY', '10001'),
+(234567890, 'Bob', 'Smith', '456', '2nd Ave', 'Los Angeles', 'CA', '90001'),
+(345678901, 'Charlie', 'Brown', '789', 'Market St', 'Chicago', 'IL', '60601'),
+(456789012, 'David', 'Lee', '101', 'Broadway', 'Miami', 'FL', '33139'),
+(567890123, 'Emily', 'Davis', '202', 'Park Ave', 'San Francisco', 'CA', '94103');
 
 -- Insert sample data into Customer (Customers linked to persons)
-INSERT INTO Customer (person_id, registration_date) VALUES
-(1, '2025-01-15'),
-(2, '2025-02-10'),
-(3, '2025-02-25');
+INSERT INTO Customer (SSN, registration_date) VALUES
+(123456789, '2025-01-15'),
+(234567890, '2025-02-10'),
+(345678901, '2025-02-25');
 
 -- Insert sample data into Employee (Employees assigned to hotels)
-INSERT INTO Employee (person_id, hotel_id, salary) VALUES
-(4, 1, 50000),
-(5, 2, 55000);
+INSERT INTO Employee (SSN, hotel_id, salary) VALUES
+(456789012, 1, 50000),
+(567890123, 2, 55000);
 
 -- Insert sample data into Employee_Role (Roles for employees)
 INSERT INTO Employee_Role (employee_id, role) VALUES
