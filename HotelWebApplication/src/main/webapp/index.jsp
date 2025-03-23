@@ -120,7 +120,7 @@
                         <div class="col param">
                             <label for="Star Rating">Star Rating</label>
                             <div class="row" id="Star Rating">
-                                <select class="star">
+                                <select class="star" id="stardrop">
                                     <option value="1">1 star</option>
                                     <option value="2">2 stars</option>
                                     <option value="3">3 stars</option>
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="results"></div>
+                <div class="results" id="results"></div>
             </div>
         </div>
     </body>

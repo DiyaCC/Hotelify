@@ -1,0 +1,7 @@
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:11 -0400] "GET /Hotelify HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:12 -0400] "GET /Hotelify/ HTTP/1.1" 200 7646
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:12 -0400] "GET /Hotelify/assets/Images/Error.png HTTP/1.1" 200 352
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:12 -0400] "GET /Hotelify/assets/css/styles.css HTTP/1.1" 200 1757
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:12 -0400] "GET /Hotelify/assets/Images/HomePhoto.png HTTP/1.1" 200 404403
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:12 -0400] "GET /favicon.ico HTTP/1.1" 404 683
+0:0:0:0:0:0:0:1 - - [23/Mar/2025:11:14:36 -0400] "GET /Hotelify/availableHotels?city=New%20York&rooms=1&checkin=2025-04-10&checkout=2025-04-20&star=1 HTTP/1.1" 404 780
