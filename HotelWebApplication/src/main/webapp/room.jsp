@@ -35,6 +35,10 @@
             widget.innerHTML=data;
           }
         }).catch(error => console.error("Error finding rooms:", error))
+        var capacityURl = `${window.location.origin}<%= request.getContextPath() %>/capacity?hotel_id=${encodeURIComponent(hotel_id)}`
+        fetch(capacityURl).then(response => response.text()).then(data => {
+          document.getElementById("totalCapacity").innerHTML=data;
+        }).catch(error => console.error("Error finding rooms:", error))
       }
       window.onload = fetchRooms;
 
@@ -61,7 +65,9 @@
 </head>
 <body>
 <div id="navBar">
-  <h3>HOTELS</h3>
+  <h3>HOTELIFY</h3>
+  <a href="index.jsp">Home</a>
+  <br>
   <a href="employee.jsp">EmployeePage</a>
   <br>
   <a href="EnterSSN.jsp">Book a Room</a>
@@ -69,17 +75,20 @@
 <div id="room">
   <img src="assets/Images/room2.png" class="homePhoto"/>
   <div class="pageContent" id =<%=hotel_id%> >
-    <h2 id="roomAvailabilityStatement">Rooms Available in <%= hotel_name %> from <%= String.valueOf(checkin) %> to <%= String.valueOf(checkout)%></h2>
+    <h3 id="roomAvailabilityStatement">Rooms Available in <%= hotel_name %> from <%= String.valueOf(checkin) %> to <%= String.valueOf(checkout)%></h3>
+    <div id="totalCapacity">
+
+    </div>
     <div class="searchBarDestinations">
       <h2>Dates and Preferences</h2>
       <div class="row">
         <div class="col param">
           <label for="checkin">Check-in</label>
-          <input type="text" id="checkin" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
+          <input type="text" id="checkin" class="inputFieldsDestinations" placeholder="YYYY-MM-DD"/>
         </div>
         <div class="col param">
           <label for="checkout">Check-out</label>
-          <input type="text" id="checkout" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
+          <input type="text" id="checkout" class="inputFieldsDestinations" placeholder="YYYY-MM-DD"/>
         </div>
         <div class="col param">
           <label for="rooms">Rooms</label>

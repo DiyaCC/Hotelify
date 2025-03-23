@@ -76,7 +76,7 @@
     </head>
     <body>
         <div id="navBar">
-            <h3>HOTELS</h3>
+            <h3>HOTELIFY</h3>
             <a href="employee.jsp">Employee Page</a>
             <br>
             <a href="EnterSSN.jsp">Book a Room</a>
@@ -101,14 +101,14 @@
                                 <img src="assets/Images/Error.png" class="hidden invalidInput" id="invalidInputCheckin">
                                 <label for="Check-in">Check-in</label>
                             </div>
-                            <input type="text" id="Check-in" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
+                            <input type="text" id="Check-in" class="inputFieldsDestinations" placeholder="YYYY-MM-DD"/>
                         </div>
                         <div class="col param">
                             <div class="row">
                                 <img src="assets/Images/Error.png" class="hidden invalidInput" id="invalidInputCheckout">
                                 <label for="Check-out">Check-out</label>
                             </div>
-                            <input type="text" id="Check-out" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
+                            <input type="text" id="Check-out" class="inputFieldsDestinations" placeholder="YYYY-MM-DD"/>
                         </div>
                         <div class="col param">
                             <div class="row">
