@@ -38,15 +38,17 @@ public class AvailableHotelsServlet extends HttpServlet {
             stmt1.executeUpdate("drop view if exists availableRooms;");
             stmt1.executeUpdate("drop table if exists temp;");
             String sql_temp =
-                    "create table temp as\n" +
-                    "\tselect h.hotel_name, h.hotel_id, h.num_rooms, m.count, h.star_rating, h.city\n" +
-                    "\tfrom (select hotel_id, count(booking_id)\n" +
-                    "\t\t\tfrom booking\n" +
-                    "\t\t\twhere NOT cancelled and ((?, ?) OVERLAPS (checkin_date, checkout_date))" +
-                    "\t\t\tgroup by hotel_id, booking_id) as m\n" +
-                    "\tright outer join hotel h\n" +
-                    "\ton h.hotel_id = m.hotel_id;\n" +
-                    "\n";
+                    "create temporary table temp as\n" +
+                            "\tSELECT Hotel_Chain.chain_name, rooms.hotel_id, rooms.hotel_name, rooms.count, rooms.num_rooms, rooms.star_rating, rooms.city\n" +
+                            "\tFROM\n" +
+                            "\t\t(select h.chain_id, h.hotel_id, h.hotel_name, m.count, h.num_rooms, h.star_rating, h.city\n" +
+                            "\t\tfrom (select hotel_id, count(booking_id)\n" +
+                            "\t\t\t\tfrom booking\n" +
+                            "\t\t\t\twhere NOT cancelled and (?, ?) OVERLAPS (checkin_date, checkout_date)\n" +
+                            "\t\t\t\tgroup by hotel_id, booking_id) as m\n" +
+                            "\t\tright outer join hotel h\n" +
+                            "\t\ton h.hotel_id = m.hotel_id) as rooms\n" +
+                            "\tNATURAL JOIN Hotel_Chain;";
             PreparedStatement stmt2 = con.prepareStatement(sql_temp);
             stmt2.setDate(1, checkin);
             stmt2.setDate(2, checkout);
@@ -73,7 +75,6 @@ public class AvailableHotelsServlet extends HttpServlet {
             int i = 0;
 
             while (rs.next()) {
-                System.out.println(i);
                 if (i%3==0) {
                     out.println("<div class='row widgetRow'>");
                 }
@@ -83,7 +84,7 @@ public class AvailableHotelsServlet extends HttpServlet {
                         "                                <div class=\"row\">\n" +
                         "                                    <div class=\"col\">\n" +
                         "                                        <h2>"+ rs.getString("hotel_name")+"</h2>\n" +
-                        "                                        <h3>Hilton express</h3>\n" +
+                        "                                        <h3>"+rs.getString("chain_name")+"</h3>\n" +
                         "                                    </div>\n" +
                         "                                    <div class=\"col\">\n" +
                         "                                        <a href='room.jsp?hotel_id="+String.valueOf(rs.getInt("hotel_id"))+"&hotel_name="+String.valueOf(rs.getString("hotel_name"))+"&checkin="+String.valueOf(checkin)+"&checkout="+String.valueOf(checkout)+"&rooms="+String.valueOf(room_val)+"'>"+
