@@ -23,65 +23,74 @@
         var parameters = new URLSearchParams(window.location.search);
         var hotel_id = parameters.get("hotel_id")
         var rooms = parameters.get("rooms")
-        var checkin = new Date(parameters.get("checkin"))
-        var checkout = new Date(parameters.get("checkout"))
-        fetch(window.location.origin + "<%= request.getContextPath() %>/availableRoomsForBook").then(response => response.text()).then(data=>{
-          console.log(data)
+        var checkin = parameters.get("checkin")
+        var checkout = parameters.get("checkout")
+        var url = `${window.location.origin}<%= request.getContextPath() %>/availableRoomsForBook?hotel_id=${encodeURIComponent(hotel_id)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&rooms=${encodeURIComponent(rooms)}`;
+        fetch(url).then(response => response.text()).then(data=>{
+          const widget = document.getElementById("groupRoomsWidgets")
+          if (data==""){
+            widget.innerHTML="<h1>No results found :(</h1>";
+          }
+          else {
+            widget.innerHTML=data;
+          }
         }).catch(error => console.error("Error finding rooms:", error))
       }
       window.onload = fetchRooms;
+
+      function reload() {
+        const checkin = document.getElementById('checkin').value;
+        const checkout = document.getElementById('checkout').value;
+        const rooms = document.getElementById('rooms').value;
+        const hotel_id = <%=hotel_id%>
+        const widget = document.getElementById("groupRoomsWidgets");
+        widget.innerHTML=""
+        var url = `${window.location.origin}<%= request.getContextPath() %>/availableRoomsForBook?hotel_id=${encodeURIComponent(hotel_id)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&rooms=${encodeURIComponent(rooms)}`;
+        console.log(url)
+        fetch(url).then(response => response.text()).then(data=>{
+          if (data==""){
+            widget.innerHTML="<h1>No results found :(</h1>";
+          }
+          else {
+            widget.innerHTML=data;
+          }
+          document.getElementById("roomAvailabilityStatement").innerHTML=`Rooms Available in <%= hotel_name %> from ${checkin} to ${checkout}`
+        }).catch(error => console.error("Error finding rooms:", error))
+      }
     </script>
 </head>
 <body>
 <div id="navBar">
   <h3>HOTELS</h3>
   <a href="employee.jsp">EmployeePage</a>
+  <br>
+  <a href="EnterSSN.jsp">Book a Room</a>
 </div>
 <div id="room">
   <img src="assets/Images/room2.png" class="homePhoto"/>
   <div class="pageContent" id =<%=hotel_id%> >
-    <h2>Rooms Available in <%= hotel_name %> from <%= String.valueOf(checkin) %> to <%= String.valueOf(checkout)%></h2>
+    <h2 id="roomAvailabilityStatement">Rooms Available in <%= hotel_name %> from <%= String.valueOf(checkin) %> to <%= String.valueOf(checkout)%></h2>
     <div class="searchBarDestinations">
       <h2>Dates and Preferences</h2>
       <div class="row">
         <div class="col param">
-          <label for="Check-in-room">Check-in</label>
-          <input type="text" id="Check-in-room" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
+          <label for="checkin">Check-in</label>
+          <input type="text" id="checkin" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
         </div>
         <div class="col param">
-          <label for="Check-out-room">Check-out</label>
-          <input type="text" id="Check-out-room" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
+          <label for="checkout">Check-out</label>
+          <input type="text" id="checkout" class="inputFieldsDestinations" placeholder="YYYY/MM/DD"/>
         </div>
         <div class="col param">
-          <label for="Rooms-room">Rooms</label>
-          <input type="text" id="Rooms-room" class="inputFieldsDestinations" placeholder="1"/>
+          <label for="rooms">Rooms</label>
+          <input type="text" id="rooms" class="inputFieldsDestinations" placeholder="1"/>
         </div>
         <div class="col param">
-          <button class="buttons">Change Search</button>
+          <button class="buttons" onclick="reload()">Change Search</button>
         </div>
       </div>
     </div>
-    <div class="groupRoomsWidgets">
-      <div class="widgetRow row">
-        <div class="roomWidget col">
-          <h2>Standard Room</h2>
-          <h4>Free WIFI | TV | Air Conditioning</h4>
-          <h4>$200 per night</h4>
-          <button class="buttons bookRoomButton">Book Now</button>
-        </div>
-        <div class="roomWidget col">
-          <h2>Standard Room</h2>
-          <h4>Free WIFI | TV | Air Conditioning</h4>
-          <h4>$200 per night</h4>
-          <button class="buttons bookRoomButton">Book Now</button>
-        </div>
-        <div class="roomWidget col">
-          <h2>Standard Room</h2>
-          <h4>Free WiFi | TV | Air Conditioning</h4>
-          <h4>$200 per night</h4>
-          <button class="buttons bookRoomButton">Book Now</button>
-        </div>
-      </div>
+    <div class="groupRoomsWidgets" id="groupRoomsWidgets">
     </div>
   </div>
 </div>

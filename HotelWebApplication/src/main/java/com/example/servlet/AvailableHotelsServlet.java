@@ -42,17 +42,14 @@ public class AvailableHotelsServlet extends HttpServlet {
                     "\tselect h.hotel_name, h.hotel_id, h.num_rooms, m.count, h.star_rating, h.city\n" +
                     "\tfrom (select hotel_id, count(booking_id)\n" +
                     "\t\t\tfrom booking\n" +
-                    "\t\t\twhere NOT cancelled and NOT ((?>checkin_date AND ?>checkout_date) OR \n" +
-                    "\t\t\t(?<checkin_date AND ?<checkout_date)) \n" +
+                    "\t\t\twhere NOT cancelled and NOT ((?, ?) OVERLAPS (checkin_date, checkout_date))" +
                     "\t\t\tgroup by hotel_id, booking_id) as m\n" +
                     "\tright outer join hotel h\n" +
                     "\ton h.hotel_id = m.hotel_id;\n" +
                     "\n";
             PreparedStatement stmt2 = con.prepareStatement(sql_temp);
             stmt2.setDate(1, checkin);
-            stmt2.setDate(2, checkin);
-            stmt2.setDate(3, checkout);
-            stmt2.setDate(4, checkout);
+            stmt2.setDate(2, checkout);
 
             stmt2.executeUpdate();
 
