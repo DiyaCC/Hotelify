@@ -7,7 +7,22 @@ body{
 #navBar{
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
 }
+
+.links{
+    display: flex;
+}
+
+.link{
+    margin: 0 40px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .homePhoto{
     display: flex;
     flex-direction: row;

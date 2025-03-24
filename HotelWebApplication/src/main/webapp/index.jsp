@@ -77,11 +77,14 @@
     <body>
         <div id="navBar">
             <h3>HOTELIFY</h3>
-            <a href="employee.jsp">Employee Page</a>
-            <br>
-            <a href="EnterSSN.jsp">Book a Room</a>
-            <br>
-            <a href="Hotels.jsp">Hotels</a>
+            <div class="links row">
+                <a href="employee.jsp" class="link">Employee Page</a>
+                <br>
+                <a href="EnterSSN.jsp" class="link">Book a Room</a>
+                <br>
+                <a href="Hotels.jsp" class="link">Hotels</a>
+            </div>
+
         </div>
         <div id="home">
             <img src="assets/Images/HomePhoto.png" class="homePhoto">

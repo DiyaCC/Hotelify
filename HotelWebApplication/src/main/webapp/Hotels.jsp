@@ -33,11 +33,13 @@
 <body>
     <div id="navBar">
         <h3>HOTELIFY</h3>
-        <a href="employee.jsp">Employee Page</a>
-        <br>
-        <a href="EnterSSN.jsp">Book a Room</a>
-        <br>
-        <a href="Hotels.jsp">Hotels</a>
+        <div class="links row">
+            <a href="index.jsp" class="link">Home</a>
+            <br>
+            <a href="employee.jsp" class="link">Employee Page</a>
+            <br>
+            <a href="EnterSSN.jsp" class="link">Book a Room</a>
+        </div>
     </div>
     <div class="row">
         <div class="col filters">

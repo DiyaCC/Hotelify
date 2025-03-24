@@ -36,6 +36,16 @@
     </script>
 </head>
 <body>
+    <div id="navBar">
+        <h3>HOTELIFY</h3>
+        <div class="links row">
+            <a href="index.jsp">Home</a>
+            <br>
+            <a href="employee.jsp" class="link">Employee Page</a>
+            <br>
+            <a href="Hotels.jsp" class="link">Hotels</a>
+        </div>
+    </div>
     <div class="SSN-container">
         <h2> Time to Book a Room! </h2>
         <form id="SSNEntry">

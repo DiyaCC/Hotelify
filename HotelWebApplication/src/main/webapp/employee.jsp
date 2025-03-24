@@ -5,6 +5,16 @@
   <title>Employee Room Booking</title>
 </head>
 <body>
+<div id="navBar">
+  <h3>HOTELIFY</h3>
+  <div class="links row">
+    <a href="index.jsp">Home</a>
+    <br>
+    <a href="EnterSSN.jsp" class="link">Book a Room</a>
+    <br>
+    <a href="Hotels.jsp" class="link">Hotels</a>
+  </div>
+</div>
 <h2>Confirm Room Bookings</h2>
   <div id = "roomSelect"> </div>
   <script>
