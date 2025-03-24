@@ -96,3 +96,22 @@ body{
     width: 70%;
     align-self: center;
 }
+.resultsAllHotels{
+    margin: 10px;
+}
+
+.hotelChoice{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding:10px;
+    border-radius: 10px;
+    width: 300px;
+    justify-content: center;
+    text-align: center;
+    margin: 5px;
+}
+
+.hotelText{
+    margin:10px;
+}

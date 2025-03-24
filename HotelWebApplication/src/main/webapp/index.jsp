@@ -80,6 +80,8 @@
             <a href="employee.jsp">Employee Page</a>
             <br>
             <a href="EnterSSN.jsp">Book a Room</a>
+            <br>
+            <a href="Hotels.jsp">Hotels</a>
         </div>
         <div id="home">
             <img src="assets/Images/HomePhoto.png" class="homePhoto">
