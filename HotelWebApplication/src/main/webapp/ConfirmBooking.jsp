@@ -27,11 +27,31 @@
                 document.getElementById("details").innerHTML+=`<h4>SSN: ${customerid}</h4>`
                 document.getElementById("details").innerHTML+="<button class='buttons' onclick='bookNow()'>Book now</button>"
             })
+
+
         });
-
         function bookNow(){
+            var url = `${window.location.origin}<%= request.getContextPath() %>/bookNow?customerid=${customerid}&rooms=${rooms}&checkin=${checkin}&checkout=${checkout}&hotel_id=${hotel_id}&room_type=${roomtype}`
+            var formData = new URLSearchParams();
+            formData.append("customerid", customerid);
+            formData.append("rooms", rooms);
+            formData.append("checkin", checkin);
+            formData.append("checkout", checkout);
+            formData.append("hotel_id", hotel_id);
+            formData.append("room_type", roomtype);
 
+
+            fetch(url, {
+                method: "POST",
+                body: `customerid=${customerid}&rooms=${rooms}&checkin=${checkin}&checkout=${checkout}&hotel_id=${hotel_id}&room_type=${roomtype}`,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            }).then(response => response.text()).then(data => {
+                document.getElementById("details").innerHTML=data
+            })
         }
+
     </script>
 </head>
 <body>

@@ -122,7 +122,6 @@ public class AvailableRoomTypesServlet extends HttpServlet  {
                             "                   <button class=\"buttons bookRoomButton\">Book Now</button>\n" +
                             "               </a>" +
                             "         </div>\n";
-                    System.out.println(html_to_append);
                     html_to_append+="</div>\n";
                     prev_room_type=rs.getInt("room_type_id");
                     html_to_append+="</div>\n";
