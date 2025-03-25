@@ -9,10 +9,83 @@
 <html>
 <head>
     <title>Create an Account</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <style> /* this is entirely for fun and completely copied from chatGPT. We will remove it, but it makes the form look soooo niceeeee - Diya
+        /* Remove bullets and reset list styles */
+        .fields ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Style each list item like a field block */
+        .fields li {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Style labels */
+        .fields label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Style input fields */
+        .fields input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border 0.3s;
+        }
+
+        .fields input:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        /* Style submit button */
+        button[type="submit"] {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #357ab7;
+        }
+
+        /* Container styling */
+        .Account-Container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 25px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-family: Arial, sans-serif;
+        }
+
+        .Account-Container h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+    </style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("fields").addEventListener("submit", function(event) {
+            document.getElementById("NewAccount").addEventListener("submit", function(event) {
                 event.preventDefault();
                 let firstName = document.getElementById("firstName").value.trim();
                 let lastName = document.getElementById("lastName").value.trim();
@@ -87,7 +160,7 @@
                     </li>
                     <li>
                         <label for="state">State/Province</label>
-                        <input type="text" id="state" name="state" placeholder="Enter your state/province">
+                        <input type="text" id="state" name="state" maxlength = "10" placeholder="Enter your state/province using the code (ON, QU, etc.)">
                     </li>
                     <li>
                         <label for="ZIP">Zip/Postal Code</label>
@@ -95,7 +168,7 @@
                     </li>
 
                     <li>
-                        <label for="SSN">Zip/Postal Code</label>
+                        <label for="SSN">SSN</label>
                         <input type="number" id="SSN" name="SSN" placeholder="Enter your SSN">
                     </li>
                 </ul>

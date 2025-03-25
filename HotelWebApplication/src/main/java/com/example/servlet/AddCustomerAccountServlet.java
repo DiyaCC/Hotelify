@@ -37,8 +37,9 @@ public class AddCustomerAccountServlet extends HttpServlet {
         try{
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
+            con.setAutoCommit(true);
 
-            String addPerson = "INSERT INTO Person (first_name, last_name, street_number, street_name, street_number, city, zip, SSN) VALUES (?, ?, ?, ?, ?. ?, ?, ?) ";
+            String addPerson = "INSERT INTO Person (first_name, last_name, street_name, street_number, city, state, zip, SSN) VALUES (?, ?, ?, ?, ?, ?, ?, ?); ";
             PreparedStatement stmt = con.prepareStatement(addPerson);
             stmt.setString(1,firstName);
             stmt.setString(2,lastName);
@@ -50,12 +51,19 @@ public class AddCustomerAccountServlet extends HttpServlet {
             stmt.setInt(8,SSN);
 
             stmt.executeUpdate();
+            out.print(firstName+lastName+ZIP);
 
             //updating customer table
-            String addCustomer = "INSERT INTO Customer (SSN) VALUES (?)";
+            String addCustomer = "INSERT INTO Customer (SSN) VALUES (?);";
             stmt = con.prepareStatement(addCustomer);
             stmt.setInt(1,SSN);
             stmt.executeUpdate();
+
+
+                try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+                try { if (con != null) con.close(); } catch (Exception e) {}
+
+            //out.print("<h1>Hello " + firstName + "! Welcome to Hotelify!</h1>");
 
 
         } catch (Exception e) {

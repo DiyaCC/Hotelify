@@ -11,12 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+// this is no longer needed since I had made this for a test - Diya
 @WebServlet("/availableRooms")
 public class AvailableRoomsServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "";     // Change if needed
+    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -35,25 +35,25 @@ public class SearchSSNServlet extends HttpServlet {
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
 
-            String searchSSN = "SELECT first_name FROM person WHERE SSN::TEXT = ?";
+            String searchSSN = "SELECT SSN FROM customer WHERE SSN::TEXT = ?";
             PreparedStatement stmt = con.prepareStatement(searchSSN);
             stmt.setString(1,SSN); //replace the question mark with SSN
             ResultSet rs = stmt.executeQuery();
 
 
             if (rs.next()){ //this customer is already in our system
-//                String custName = "SELECT first_name FROM person WHERE person_id = ?";
-//                PreparedStatement custStmt = con.prepareStatement(custName);
-//                custStmt.setString(1,SSN);
-//                ResultSet custRs = custStmt.executeQuery();
+                String custName = "SELECT first_name FROM person WHERE SSN::TEXT = ?";
+                PreparedStatement custStmt = con.prepareStatement(custName);
+                custStmt.setString(1,SSN);
+                ResultSet custRs = custStmt.executeQuery();
 
-//                while (custRs.next()){
-//                    String name = custRs.getString("first_name");
-//                    out.print("Welcome " + name);
-//                }
+                while (custRs.next()){
+                    String name = custRs.getString("first_name");
+                    out.print("Welcome " + name + "! Let's book you that room!");
+                }
 
-                String firstName = rs.getString("first_name");
-                out.print("Hi " + firstName + "! Let's book you that room!");
+//                String firstName = rs.getString("first_name");
+//                out.print("Hi " + firstName + "! Let's book you that room!");
 
             }else{
                 out.print("<p>It looks like we can't find you in our system. Make an account by clicking below!</p>");
