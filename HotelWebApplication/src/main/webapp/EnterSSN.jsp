@@ -90,6 +90,13 @@
     </style>
 
     <script>
+        var parameters = new URLSearchParams(window.location.search);
+        var hotel_id = parameters.get("hotel_id")
+        var roomtype = parameters.get("roomtype")
+        var checkin = parameters.get("checkin")
+        var checkout = parameters.get("checkout")
+        var rooms=parameters.get("rooms")
+
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("SSNEntry").addEventListener("submit", function(event) {
                 event.preventDefault();
@@ -111,6 +118,10 @@
         });
         function redirectToCreateAccount() {
             window.location.href = "createAccount.jsp";
+        }
+        function redirectToConfirm(){
+            SSN = document.getElementById("SSN").value.trim();
+            window.location.href = `ConfirmBooking.jsp?hotel_id=${hotel_id}&roomtype=${roomtype}&checkin=${checkin}&checkout=${checkout}&rooms=${rooms}&customerid=${SSN}`
         }
     </script>
 </head>

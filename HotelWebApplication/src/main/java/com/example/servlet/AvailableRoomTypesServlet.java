@@ -17,7 +17,7 @@ public class AvailableRoomTypesServlet extends HttpServlet  {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,7 +28,9 @@ public class AvailableRoomTypesServlet extends HttpServlet  {
 
         int hotel_id = Integer.parseInt(request.getParameter("hotel_id"));
         Date checkin = Date.valueOf(request.getParameter("checkin"));
+        String checkinString = request.getParameter("checkin");
         Date checkout = Date.valueOf(request.getParameter("checkout"));
+        String checkoutString = request.getParameter("checkout");
         int room_val = Integer.parseInt(request.getParameter("rooms"));
 
         try{
@@ -102,40 +104,43 @@ public class AvailableRoomTypesServlet extends HttpServlet  {
             int i =0;
 
             while (rs.next()) {
-                if (i%3==0){
-                    html_to_append+="<div class='widgetRow row'>";
-                }
-                //for the first row
-                if (prev_room_type==0){
+
+                if (prev_room_type==0 ) {
+                    html_to_append +="<div class='widgetRow row'>";
+                    //if start of query, need to create the first widget
                     prev_room_type=rs.getInt("room_type_id");
                     html_to_append+="<div class=\"roomWidget col\">\n" +
                             "          <h2>"+rs.getString("description")+"</h2>\n" +
                             "           <h4>";
                     html_to_append += rs.getString("type");
-                }
-                //for the remaining rows
-                if (prev_room_type==rs.getInt("room_type_id") && i!=0) {
+                } else if (prev_room_type==rs.getInt("room_type_id")) {
                     html_to_append += " | " + rs.getString("type");
-                } else if (prev_room_type!=rs.getInt("room_type_id") && i!=0) {
+                } else {
                     html_to_append +="</h4>\n" +
-                            "          <button class=\"buttons bookRoomButton\">Book Now</button>\n";
+                            "          <div class='col'>" +
+                            "               <a href='EnterSSN.jsp?hotel_id="+hotel_id +"&roomtype="+prev_room_type+"&checkin="+checkinString+"&checkout="+checkoutString+"&rooms="+room_val+"'>" +
+                            "                   <button class=\"buttons bookRoomButton\">Book Now</button>\n" +
+                            "               </a>" +
+                            "         </div>\n";
+                    System.out.println(html_to_append);
                     html_to_append+="</div>\n";
-                    if (i%3==2){
-                        html_to_append+="</div>\n<div class='widgetRow row'>\n";
-                    }
+                    prev_room_type=rs.getInt("room_type_id");
+                    html_to_append+="</div>\n";
+                    html_to_append +="<div class='widgetRow row'>";
                     html_to_append+="<div class='roomWidget col'>\n";
                     html_to_append+="<h2>"+rs.getString("description")+"</h2>\n";
                     html_to_append+="<h4>"+rs.getString("type");
                 }
-                i++;
             }
             if (!html_to_append.isEmpty()){
                 html_to_append+="</h4>\n" +
-                        "          <button class=\"buttons bookRoomButton\">Book Now</button>\n";
+                        "          <div class='col'>" +
+                        "               <a href='EnterSSN.jsp?hotel_id="+hotel_id +"&roomtype="+prev_room_type+"&checkin="+checkinString+"&checkout="+checkoutString+"&rooms="+room_val +"'>" +
+                        "                   <button class=\"buttons bookRoomButton\">Book Now</button>\n" +
+                        "               </a>" +
+                        "         </div>";
                 html_to_append+="</div>\n";
-            }
-            if (i%3!=2){
-                html_to_append+="<div class='widgetRow row'>\n";
+                html_to_append+="</div>\n";
             }
             out.println(html_to_append);
 
