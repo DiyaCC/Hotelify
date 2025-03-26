@@ -11,77 +11,6 @@
     <title>Create an Account</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-    <style> /* this is entirely for fun and completely copied from chatGPT. We will remove it, but it makes the form look soooo niceeeee - Diya
-        /* Remove bullets and reset list styles */
-        .fields ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* Style each list item like a field block */
-        .fields li {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Style labels */
-        .fields label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            color: #333;
-        }
-
-        /* Style input fields */
-        .fields input {
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            transition: border 0.3s;
-        }
-
-        .fields input:focus {
-            border-color: #4a90e2;
-            outline: none;
-        }
-
-        /* Style submit button */
-        button[type="submit"] {
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #357ab7;
-        }
-
-        /* Container styling */
-        .Account-Container {
-            max-width: 500px;
-            margin: 40px auto;
-            padding: 25px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            font-family: Arial, sans-serif;
-        }
-
-        .Account-Container h3 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
-        }
-
-    </style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -141,51 +70,59 @@
 
 </head>
 <body>
-
-    <div class = "Account-Container">
-        <h3>Create an Account to Book a Room</h3>
-        <form id="NewAccount">
-            <div class="fields" id="fields">
-                <ul>
-                    <li>
+    <div id="navBar">
+        <h3>HOTELIFY</h3>
+        <div class="links row">
+            <a href="index.jsp" class="link">Home</a>
+            <br>
+            <a href="employee.jsp" class="link">Employee Page</a>
+            <br>
+            <a href="Hotels.jsp" class="link">Search For Hotels</a>
+        </div>
+    </div>
+    <div class = "accountPage">
+        <div class="account">
+            <h3 class="text">Create an Account to Book a Room</h3>
+            <form id="NewAccount">
+                <div class="fields" id="fields">
+                    <div class="field">
                         <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
-                    </li>
-                    <li>
+                        <input class="field" type="text" id="firstName" name="firstName" placeholder="Enter your first name">
+                    </div>
+                    <div class="field">
                         <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
-                    </li>
-                    <li>
+                        <input class="field" type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+                    </div>
+                    <div class="field">
                         <label for="streetName">Street Name</label>
-                        <input type="text" id="streetName" name="streetName" placeholder="Enter your street name">
-                    </li>
-                    <li>
+                        <input class="field" type="text" id="streetName" name="streetName" placeholder="Enter your street name">
+                    </div>
+                    <div class="field">
                         <label for="streetNumber">Street Number</label>
-                        <input type="number" id="streetNumber" min="1" step="1" name="streetNumber" placeholder="Enter your street number">
-                    </li>
-                    <li>
+                        <input class="field" type="number" id="streetNumber" min="1" step="1" name="streetNumber" placeholder="Enter your street number">
+                    </div>
+                    <div class="field">
                         <label for="city">City</label>
-                        <input type="text" id="city" name="city" placeholder="Enter your city">
-                    </li>
-                    <li>
+                        <input class="field" type="text" id="city" name="city" placeholder="Enter your city">
+                    </div>
+                    <div class="field">
                         <label for="state">State/Province</label>
-                        <input type="text" id="state" name="state" maxlength = "10" placeholder="Enter your state/province using the code (ON, QU, etc.)">
-                    </li>
-                    <li>
+                        <input class="field" type="text" id="state" name="state" maxlength = "10" placeholder="Enter your state/province using the code (ON, QU, etc.)">
+                    </div>
+                    <div class="field">
                         <label for="ZIP">Zip/Postal Code</label>
-                        <input type="text" id="ZIP" name="ZIP" placeholder="Enter your ZIP/Postal Code">
-                    </li>
-
-                    <li>
+                        <input class="field" type="text" id="ZIP" name="ZIP" placeholder="Enter your ZIP/Postal Code">
+                    </div>
+                    <div class="field">
                         <label for="SSN">SSN</label>
-                        <input type="number" id="SSN" name="SSN" placeholder="Enter your SSN">
-                    </li>
-                </ul>
-            </div>
-            <button type = "submit"> Submit Information </button>
-        </form>
-        <div id="results"></div>
+                        <input class="field" type="number" id="SSN" name="SSN" placeholder="Enter your SSN">
+                    </div>
+                    <button type = "submit" class="buttons field"> Submit Information </button>
+                </div>
 
+            </form>
+            <div id="results"></div>
+        </div>
 
     </div>
 
