@@ -5,6 +5,20 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <script>
+        function backToRooms(hotel_id){
+
+            var checkin = document.getElementById("checkin").value || '0000-00-00'
+            var checkout = document.getElementById("checkout").value || '0000-00-00'
+
+            var rooms=0
+
+            fetch(`${window.location.origin}<%= request.getContextPath() %>/hotelID?hotel_id=${hotel_id}`).then(response => response.text()).then(data => {
+                console.log(encodeURIComponent(data.trim()))
+                var url = `room.jsp?hotel_id=${encodeURIComponent(hotel_id)}&hotel_name=${encodeURIComponent(data.trim())}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&rooms=${encodeURIComponent(rooms)}`
+                window.location.href = url
+            })
+
+        }
         function fetchAllHotels(){
             var url = window.location.origin + "/HotelWebApplication/allHotels";
             fetch(url).then(response => response.text()).then(data=>{
@@ -27,6 +41,8 @@
             fetch(url).then(response => response.text()).then(data => {
                 document.getElementById("results").innerHTML=data;
             }).catch(error => console.error("Error finding rooms:", error))
+
+
         }
     </script>
 </head>
@@ -41,7 +57,7 @@
             <a href="EnterSSN.jsp" class="link">Book a Room</a>
         </div>
     </div>
-    <div class="row">
+    <div class="row content">
         <div class="col filters">
             <label for="destination">Area</label>
             <input type="text" id="destination" placeholder="New York"/>

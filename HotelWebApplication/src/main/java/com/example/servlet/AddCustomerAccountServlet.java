@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AddCustomerAccountServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -63,7 +63,9 @@ public class AddCustomerAccountServlet extends HttpServlet {
                 try { if (stmt != null) stmt.close(); } catch (Exception e) {}
                 try { if (con != null) con.close(); } catch (Exception e) {}
 
-            //out.print("<h1>Hello " + firstName + "! Welcome to Hotelify!</h1>");
+            out.println("<h1>Hello " + firstName + "! Welcome to Hotelify!</h1>");
+                out.println("<h3>Now that your account is setup, lets finish your booking</h3>");
+                out.println("<button onclick='redirectToBook()'>Book Now</button>");
 
 
         } catch (Exception e) {

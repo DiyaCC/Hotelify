@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FiltersServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -64,7 +64,7 @@ public class FiltersServlet extends HttpServlet {
                 stmt.executeUpdate(max);
             }
             if (totalHotelRooms!=null && !totalHotelRooms.isEmpty()) {
-                String total = "DELETE FROM tempFiltered WHERE num_rooms!="+totalHotelRooms+";";
+                String total = "DELETE FROM tempFiltered WHERE num_rooms<"+totalHotelRooms+";";
                 stmt.executeUpdate(total);
             }
             if (roomSize!=null && !roomSize.isEmpty()) {
@@ -108,7 +108,7 @@ public class FiltersServlet extends HttpServlet {
                         "                <h3 class=\"hotelText\">"+ rs.getString("hotel_name")+"</h3>\n" +
                         "                <h4 class=\"hotelText\">"+ rs.getString("chain_name")+"</h4>\n" +
                         "                <h4 class=\"hotelText\">"+ rs.getInt("star_rating")+" Stars</h4>\n" +
-                        "                <button class=\"buttons\">Book now</button>\n" +
+                        "                <button class=\"buttons\" onclick='backToRooms("+rs.getInt("hotel_id")+" +)'>Book now</button>\n" +
                         "            </div>";
                 out.println(div);
             }

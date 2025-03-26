@@ -10,6 +10,8 @@ body{
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+    background-color: white;
+    box-shadow:0px 10px 10px #CDCDCD;
 }
 
 .links{
@@ -113,6 +115,8 @@ body{
 }
 .resultsAllHotels{
     margin: 10px;
+    height: 80vh;
+    overflow-y: scroll;
 }
 
 .hotelChoice{
@@ -142,4 +146,9 @@ body{
 .save{
     background-color:#EFEFEF;
     border-radius: 10px;
+}
+.filters{
+    background-color: white;
+    padding: 10px;
+    margin: 20px;
 }

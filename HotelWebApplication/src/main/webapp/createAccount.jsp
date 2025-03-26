@@ -112,18 +112,27 @@
                     "&ZIP=" + encodeURIComponent(ZIP) +
                     "&SSN=" + encodeURIComponent(SSN);
 
-
-
                 fetch("addCustomerAccountServlet", {
                     method: "POST", // this is a method used for sending data
                     headers: { "Content-Type": "application/x-www-form-urlencoded" }, // indicates the data is coming from a form
                     body:  bodyData
                 }).then(response => response.text()).then(data => {
-                    document.getElementById("response").innerHTML = data;
+                    document.getElementById("results").innerHTML = data;
+
                 }).catch(error => console.error("Error:", error));
             });
         });
 
+        function redirectToBook(){
+            var parameters = new URLSearchParams(window.location.search);
+            var hotel_id = parameters.get("hotel_id")
+            var roomtype = parameters.get("roomtype")
+            var checkin = parameters.get("checkin")
+            var checkout = parameters.get("checkout")
+            var rooms=parameters.get("rooms")
+            let SSN = document.getElementById("SSN").value.trim();
+            window.location.href = `ConfirmBooking.jsp?hotel_id=${hotel_id}&roomtype=${roomtype}&checkin=${checkin}&checkout=${checkout}&rooms=${rooms}&customerid=${SSN}`
+        }
 
     </script>
 
@@ -136,7 +145,7 @@
     <div class = "Account-Container">
         <h3>Create an Account to Book a Room</h3>
         <form id="NewAccount">
-            <div class="fields">
+            <div class="fields" id="fields">
                 <ul>
                     <li>
                         <label for="firstName">First Name</label>
@@ -175,6 +184,7 @@
             </div>
             <button type = "submit"> Submit Information </button>
         </form>
+        <div id="results"></div>
 
 
     </div>

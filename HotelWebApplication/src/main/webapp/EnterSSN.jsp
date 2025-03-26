@@ -117,7 +117,7 @@
             });
         });
         function redirectToCreateAccount() {
-            window.location.href = "createAccount.jsp";
+            window.location.href = `createAccount.jsp?hotel_id=${hotel_id}&roomtype=${roomtype}&checkin=${checkin}&checkout=${checkout}&rooms=${rooms}`;
         }
         function redirectToConfirm(){
             SSN = document.getElementById("SSN").value.trim();
