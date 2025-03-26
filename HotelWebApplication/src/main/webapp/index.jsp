@@ -83,6 +83,8 @@
                 <a href="Hotels.jsp" class="link">Search For Hotels</a>
                 <br>
                 <a href="loginViaBookingID.jsp" class="link">Update Existing Booking</a>
+                <br>
+                <a href="about.jsp" class="link">About</a>
             </div>
 
         </div>

@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/allHotels")
+@WebServlet("/areas")
 public class AreasServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
@@ -22,37 +22,42 @@ public class AreasServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
+        String checkin =request.getParameter("checkin");
+        System.out.println(checkin);
+        String checkout = request.getParameter("checkout");
 
         try{
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
 
-            String create_view = "CREATE OR REPLACE VIEW allHotels as \n" +
-                    "SELECT hotel_id, hotel_name, chain_name, num_rooms, city, star_rating, price, capacity\n" +
-                    "FROM\n" +
-                    "(SELECT hotel_id, chain_name, star_rating, hotel_name, num_rooms, city\n" +
-                    "FROM HOTEL NATURAL JOIN Hotel_chain)\n" +
-                    "NATURAL JOIN\n" +
-                    "ROOM";
+            String create_view = "CREATE OR REPLACE VIEW allAreas as\n" +
+                    "\tSELECT city, sum(available) as rooms\n" +
+                    "\tFROM\n" +
+                    "\t\t(SELECT DISTINCT Hotel_Chain.chain_name, rooms.hotel_id, rooms.hotel_name, rooms.num_rooms-rooms.booked_count as available , rooms.star_rating, rooms.city\n" +
+                    "\t\tFROM\n" +
+                    "\t\t(select h.chain_id, h.hotel_id, h.hotel_name, coalesce(m.count, 0) as booked_count, h.num_rooms, h.star_rating, h.city\n" +
+                    "\t\tfrom (select hotel_id, count(booking_id)\n" +
+                    "\t\tfrom booking\n" +
+                    "\t\twhere NOT cancelled and ('"+checkin+"', '"+checkout+"') OVERLAPS (checkin_date, checkout_date)\n" +
+                    "\t\tgroup by hotel_id, booking_id) as m\n" +
+                    "\t\tright outer join hotel h\n" +
+                    "\t\ton h.hotel_id = m.hotel_id) as rooms\n" +
+                    "\t\tNATURAL JOIN Hotel_chain)\n" +
+                    "\tgroup by city";
             Statement stmt = con.createStatement();
+            System.out.println(stmt.toString());
             stmt.executeUpdate(create_view);
 
-            String sql = "SELECT DISTINCT hotel_id, hotel_name, chain_name, star_rating\n" +
-                    "FROM allHotels";
+            String sql = "SELECT * FROM allAreas;";
+            Statement stm = con.createStatement();
 
-            stmt.executeQuery(sql);
             ResultSet rs = stmt.executeQuery(sql);
-
+            out.println("<table><tr><th>City</th><th>Total Available Rooms</th></tr>");
             while (rs.next()){
-                String div = "<div class=\"hotelChoice\" id="+rs.getInt("hotel_id")+">\n" +
-                        "                <h3 class=\"hotelText\">"+ rs.getString("hotel_name")+"</h3>\n" +
-                        "                <h4 class=\"hotelText\">"+ rs.getString("chain_name")+"</h4>\n" +
-                        "                <h4 class=\"hotelText\">"+ rs.getInt("star_rating")+" Stars</h4>\n" +
-                        "                <button class=\"buttons\" onclick='backToRooms("+rs.getInt("hotel_id")+")'>Book now</button>\n" +
-                        "            </div>";
+                String div = "<tr><td>"+rs.getString("city")+"</td><td>"+rs.getInt("rooms")+"</td></tr>";
                 out.println(div);
             }
+            out.println("</table>");
 
         } catch (Exception e) {
             e.printStackTrace();

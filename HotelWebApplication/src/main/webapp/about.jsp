@@ -17,6 +17,9 @@
             const checkout = document.getElementById("checkout").value;
 
             const url = `${window.location.origin}<%= request.getContextPath() %>/areas?checkin=${checkin}&checkout=${checkout}`
+            fetch(url).then(response => response.text()).then(data=>{
+                document.getElementById("results").innerHTML=data
+            }).catch(error => console.error("Error finding rooms:", error))
         }
     </script>
 </head>
@@ -58,6 +61,8 @@
                         </div>
                     </div>
                 </div>
+                <br>
+                <div id="results"></div>
             </div>
         </div>
     </div>
