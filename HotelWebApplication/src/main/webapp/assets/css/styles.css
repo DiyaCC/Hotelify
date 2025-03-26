@@ -58,7 +58,6 @@ body{
     box-shadow:0px 10px 10px #CDCDCD;
 }
 input{
-    background-color: white;
     padding:10px;
     display: flex;
     justify-content: center;
@@ -66,8 +65,22 @@ input{
     border:none;
     background-color:  #EFEFEF;
 }
+.inputDestinations{
+    background-color: white;
+    padding:10px;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    border:none;
+}
+
 .inputFieldsDestinations{
     border:none;
+    background-color: white;
+}
+
+.about{
+    height: 85vh;
 }
 .buttons{
     background-color: #17A0C6;
