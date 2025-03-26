@@ -83,6 +83,8 @@
                 <a href="EnterSSN.jsp" class="link">Book a Room</a>
                 <br>
                 <a href="Hotels.jsp" class="link">Hotels</a>
+                <br>
+                <a href="loginViaBookingID.jsp" class="link">Update Existing Booking</a>
             </div>
 
         </div>

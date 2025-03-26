@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/searchSSN")
-public class SearchSSNServlet extends HttpServlet {
+@WebServlet("/searchBookingID")
+public class SearchBookingIDServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
     private static final String JDBC_PASS = "Matara!92222";     // Change if needed
@@ -24,10 +24,10 @@ public class SearchSSNServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        String SSN = request.getParameter("SSN");
+        String bookingID = request.getParameter("bookingID");
 
-        if (SSN == null || SSN.trim().isEmpty()) {
-            out.print("Invalid SSN");
+        if (bookingID == null || bookingID.trim().isEmpty()) {
+            out.print("Invalid Booking ID");
             return;
         }
 
@@ -35,30 +35,18 @@ public class SearchSSNServlet extends HttpServlet {
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
 
-            String searchSSN = "SELECT SSN FROM customer WHERE SSN::TEXT = ?";
-            PreparedStatement stmt = con.prepareStatement(searchSSN);
-            stmt.setString(1,SSN); //replace the question mark with SSN
+            String searchBookingID = "SELECT booking_id FROM Booking WHERE booking_id::TEXT = ?";
+            PreparedStatement stmt = con.prepareStatement(searchBookingID);
+            stmt.setString(1,bookingID); //replace the question mark with bookingID
             ResultSet rs = stmt.executeQuery();
 
-
-            if (rs.next()){ //this customer is already in our system
-                String custName = "SELECT first_name FROM person WHERE SSN::TEXT = ?";
-                PreparedStatement custStmt = con.prepareStatement(custName);
-                custStmt.setString(1,SSN);
-                ResultSet custRs = custStmt.executeQuery();
-
-                while (custRs.next()){
-                    String name = custRs.getString("first_name");
-                    out.print("Welcome " + name + "! Let's book you that room!");
-                    out.println("<button onclick='redirectToConfirm()'>Review Booking<button>");
-                }
-
-//                String firstName = rs.getString("first_name");
-//                out.print("Hi " + firstName + "! Let's book you that room!");
+            if (rs.next()){ //this booking is already in our system
+                //response.sendRedirect("EditBooking.jsp");
+                out.print("REDIRECT:EditBooking.jsp?bookingID=" + bookingID);
 
             }else{
-                out.print("<p>It looks like we can't find you in our system. Make an account by clicking below!</p>");
-                out.print("<button onclick = 'redirectToCreateAccount()'>Create Account</button>");
+                out.print("<p>It looks like we can't find your booking in our system. Verify your Booking ID.</p>");
+                //out.print("<button onclick = 'redirectToCreateAccount()'>Create Account</button>");
 
             }
             rs.close();
