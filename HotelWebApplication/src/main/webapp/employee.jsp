@@ -10,8 +10,6 @@
   <div class="links row">
     <a href="index.jsp">Home</a>
     <br>
-    <a href="EnterSSN.jsp" class="link">Book a Room</a>
-    <br>
     <a href="Hotels.jsp" class="link">Hotels</a>
   </div>
 </div>

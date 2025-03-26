@@ -57,8 +57,8 @@ public class SearchSSNServlet extends HttpServlet {
 //                out.print("Hi " + firstName + "! Let's book you that room!");
 
             }else{
-                out.print("<p>It looks like we can't find you in our system. Make an account by clicking below!</p>");
-                out.print("<button onclick = 'redirectToCreateAccount()'>Create Account</button>");
+                out.print("<h5>It looks like we can't find you in our system. Make an account by clicking below!</h5>");
+                out.print("<button onclick = 'redirectToCreateAccount()' class='buttons'>Create Account</button>");
 
             }
             rs.close();

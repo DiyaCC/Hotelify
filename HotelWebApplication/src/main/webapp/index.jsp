@@ -80,9 +80,7 @@
             <div class="links row">
                 <a href="employee.jsp" class="link">Employee Page</a>
                 <br>
-                <a href="EnterSSN.jsp" class="link">Book a Room</a>
-                <br>
-                <a href="Hotels.jsp" class="link">Hotels</a>
+                <a href="Hotels.jsp" class="link">Search For Hotels</a>
             </div>
 
         </div>

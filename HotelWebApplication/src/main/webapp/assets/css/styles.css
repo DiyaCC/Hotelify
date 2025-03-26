@@ -57,12 +57,14 @@ body{
     margin-top:-20px;
     box-shadow:0px 10px 10px #CDCDCD;
 }
-.inputDestinations{
+input{
     background-color: white;
     padding:10px;
     display: flex;
     justify-content: center;
     border-radius: 10px;
+    border:none;
+    background-color:  #EFEFEF;
 }
 .inputFieldsDestinations{
     border:none;
@@ -152,3 +154,55 @@ body{
     padding: 10px;
     margin: 20px;
 }
+.SSNBook{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.SSNContainer{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+}
+.accountPage{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    padding:20px;
+}
+
+.account{
+    background-color: white;
+    margin: 10px;
+    padding: 40px;
+    width: 40vw;
+}
+.fields{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    width: 40vw;
+}
+.field{
+    margin: 2px;
+    width: 35vw;
+}
+.text{
+    text-align: center;
+}
+

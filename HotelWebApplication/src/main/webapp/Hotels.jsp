@@ -53,8 +53,6 @@
             <a href="index.jsp" class="link">Home</a>
             <br>
             <a href="employee.jsp" class="link">Employee Page</a>
-            <br>
-            <a href="EnterSSN.jsp" class="link">Book a Room</a>
         </div>
     </div>
     <div class="row content">
