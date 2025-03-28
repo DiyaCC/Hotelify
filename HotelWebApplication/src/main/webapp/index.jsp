@@ -80,6 +80,8 @@
             <div class="links row">
                 <a href="employee.jsp" class="link">Employee Page</a>
                 <br>
+                <a href="login.jsp" class="link">Customer Page</a>
+                <br>
                 <a href="Hotels.jsp" class="link">Search For Hotels</a>
                 <br>
                 <a href="loginViaBookingID.jsp" class="link">Update Existing Booking</a>
