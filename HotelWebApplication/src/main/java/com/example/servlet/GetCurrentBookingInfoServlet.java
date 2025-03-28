@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class GetCurrentBookingInfoServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -108,16 +108,16 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
 
             }
 
-            out.println("<form id='updateBookingForm'>");
+            out.println("<form id='updateBookingForm' class='account'> ");
 
             out.println("<input type='hidden' name='bookingID' value='" + bookingID + "' />");
 
 
-            out.println("<p>" + "Hi " + custFirstName + " " + custLastName + "! Change your booking at " + hotelName + " below!" + "</p><br>");
+            out.println("<h2 class='text'>" + "Hi " + custFirstName + " " + custLastName + "! Change your booking at " + hotelName + " below!" + "</h2><br>");
 
 
             out.println("<label>Room Type:</label><br>");
-            out.println("<select name='roomTypeID' id='roomTypeID' required>");
+            out.println("<select name='roomTypeID' id='roomTypeID' required> class='editBookinginput'");
 
             out.println("<option value='" + currentRoomTypeID + "' selected>" + currentRoomType + "</option>");
 
@@ -135,15 +135,14 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
             out.println("</select><br><br>");
 
             out.println("<label>Check-in Date:</label><br>");
-            out.println("<input type='date' id='checkinDate' name='Check-in Date' value='" + checkinDate + "' required><br><br>");
+            out.println("<input type='date' id='checkinDate' name='Check-in Date' class='editBookinginput' value='" + checkinDate + "' required><br><br>");
 
             out.println("<label>Check-out Date:</label><br>");
-            out.println("<input type='date' id='checkoutDate' name='Check out Date' value='" + checkoutDate + "' required><br><br>");
+            out.println("<input type='date' id='checkoutDate' name='Check out Date' class='editBookinginput' value='" + checkoutDate + "' required><br><br>");
 
 
-            out.println("<button type='submit'>Update Booking</button>");
+            out.println("<button type='submit' class='buttons'>Update Booking</button>");
             out.println("</form>");
-            out.println("</body></html>");
 
 
 

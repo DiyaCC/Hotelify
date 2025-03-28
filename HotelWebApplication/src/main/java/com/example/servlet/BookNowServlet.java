@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class BookNowServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -50,8 +50,23 @@ public class BookNowServlet extends HttpServlet {
             for (int i=0; i<rooms; i++){
                 ps.executeUpdate();
             }
+
+            String select = "SELECT lastval() from booking";
+            Statement stmt = con.createStatement();
+            ResultSet rs2 = stmt.executeQuery(select);
+            ResultSetMetaData metaData = rs2.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Print column names and types
+            System.out.println("Columns in the ResultSet:");
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.println(metaData.getColumnName(i) + " - " + metaData.getColumnTypeName(i));
+            }
+            rs2.next();
+
             String thanks = "<h2>Thank you for your booking</h2>"+
                     "<h4>We look forward to seeing you soon! </h4> "+
+                    "<h4>Booking ID: "+rs2.getInt("lastval")+"</h4>"+
                     "<button onclick='returnHome()' class='buttons'>Return Home</button>";
             out.println(thanks);
             con.close();

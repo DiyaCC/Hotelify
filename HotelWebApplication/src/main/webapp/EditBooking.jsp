@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Update Room as a Customer</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="assets/css/styles.css">
     <script>
 
         const parameters = new URLSearchParams(window.location.search);
@@ -69,8 +71,19 @@
 </head>
 
 <body>
-    <div id="bookingForm"></div>
-
+    <div id="navBar">
+        <h3>HOTELIFY</h3>
+        <div class="links row">
+            <a href="index.jsp" class="link">Home</a>
+            <br>
+            <a href="employee.jsp" class="link">Employee Page</a>
+            <br>
+            <a href="Hotels.jsp" class="link">Hotels</a>
+        </div>
+    </div>
+    <div class="pageContent">
+        <div id="bookingForm"></div>
+    </div>
 
 </body>
 </html>

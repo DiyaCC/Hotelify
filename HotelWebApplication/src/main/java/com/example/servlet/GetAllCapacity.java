@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/capacity")
-public class calculateCapacityServlet extends HttpServlet {
+@WebServlet("/GetAllCapacity")
+public class GetAllCapacity extends HttpServlet {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
@@ -23,8 +23,6 @@ public class calculateCapacityServlet extends HttpServlet {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        int hotel_id = Integer.parseInt(request.getParameter("hotel_id"));
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -40,11 +38,17 @@ public class calculateCapacityServlet extends HttpServlet {
 
             PreparedStatement ps = con.prepareStatement(query);
             ps.executeUpdate();
-            ps = con.prepareStatement("SELECT * FROM hotel_capacity WHERE hotel_id=?");
-            ps.setInt(1, hotel_id);
+
+            ps = con.prepareStatement("SELECT hotel_name, total_capacity FROM hotel_capacity");
             ResultSet rs = ps.executeQuery();
             rs.next();
-            out.println("<h4> Hotel capacity: " + rs.getInt("total_capacity") + " people </h4>");
+
+            out.println("<table><tr><th>Hotel</th><th>Total Capacity</th></tr>");
+            while (rs.next()){
+                String div = "<tr><td>"+rs.getString("hotel_name")+"</td><td>"+rs.getInt("total_capacity")+"</td></tr>";
+                out.println(div);
+            }
+            out.println("</table>");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,6 +21,12 @@
                 document.getElementById("results").innerHTML=data
             }).catch(error => console.error("Error finding rooms:", error))
         }
+        document.addEventListener("DOMContentLoaded", function() {
+            const url=`${window.location.origin}<%= request.getContextPath() %>/GetAllCapacity`
+            fetch(url).then(response => response.text()).then(data=>{
+                document.getElementById("capacityTable").innerHTML=data
+            }).catch(error => console.error("Error finding rooms:", error))
+        })
     </script>
 </head>
 <body>
@@ -43,7 +49,12 @@
                 <h3>Our Vision</h3>
                 <p>Our goal is to connect you to your dream vacation. By partnering with many big name franchises, such as Marriott or Hilton, we strive to book high value rooms for low price. We aim to take the troubles of planning out of your day to day life, so you can look forward to some much needed resting and relaxing. </p>
                 <h3>Our Partners</h3>
-                <p>Hotelify connects you to hotels in multiple cities to ensure your dream vacation. Select some dates to see the number of rooms available per area</p>
+                <p>Hotelify connects you to hotels in multiple cities to ensure your dream vacation.</p>
+                <br>
+                <div id="capacityTable">
+
+                </div>
+                <p>Select some dates to see the number of rooms available per area</p>
                 <br>
                 <div class="searchBarDestinations">
                     <h2>Dates and Preferences</h2>
