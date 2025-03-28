@@ -73,7 +73,7 @@ CREATE TABLE Room (
     hotel_id INT,   
     room_id SERIAL,
     --
-    room_number INT NOT NULL,
+    room_number INT NOT NULL CHECK (room_number > 1),
     room_type_id INT NOT NULL,
     price DECIMAL(10,2) NOT NULL CHECK (price > 0),
     capacity INT NOT NULL CHECK (capacity BETWEEN 1 AND 5),
@@ -172,7 +172,7 @@ CREATE TABLE Employee (
     --
     SSN INT NOT NULL,
     hotel_id INT NOT NULL,
-    salary DECIMAL(7,2),
+    salary DECIMAL(7,2) check (salary > 0 ),
     --
     PRIMARY KEY (employee_id),
     FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
@@ -196,7 +196,7 @@ CREATE TABLE Booking (
     hotel_id INT NOT NULL,
     room_type_id INT NOT NULL,
     confirmation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    checkin_date DATE NOT NULL,
+    checkin_date DATE NOT NULL CHECK (checkin_date >= CURRENT_DATE),
     checkout_date DATE NOT NULL CHECK (checkout_date > checkin_date),
     cancelled BOOLEAN NOT NULL DEFAULT FALSE,
     --
