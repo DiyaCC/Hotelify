@@ -35,6 +35,9 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
 
             String getRoomType;
             String roomType = null;
+            String currentRoomType = null;
+            int roomTypeID = -1;
+            int currentRoomTypeID = -1;
 
             String getHotel = null;
             String hotelName = null;
@@ -65,13 +68,13 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
                     custLastName = rs2.getString("last_name");
                 }
 
-                int roomTypeID = booking.getInt("room_type_id");
+                currentRoomTypeID = booking.getInt("room_type_id");
                 getRoomType = "SELECT description FROM room_type WHERE room_type_id::TEXT = ? ";
                 PreparedStatement stmt3 = con.prepareStatement(getRoomType);
-                stmt3.setString(1, String.valueOf(roomTypeID));
+                stmt3.setString(1, String.valueOf(currentRoomTypeID));
                 ResultSet rs3 = stmt3.executeQuery();
                 while (rs3.next()){
-                    roomType = rs3.getString("description");
+                    currentRoomType = rs3.getString("description");
                 }
 
 
@@ -90,7 +93,7 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
 
 
                 getAvailableRoomTypes =
-                        "SELECT DISTINCT C.description " +
+                        "SELECT DISTINCT C.description, C.room_type_id " +
                         "FROM hotel A " +
                                 "INNER JOIN room B " +
                                 "ON B.hotel_id = A.hotel_id " +
@@ -105,36 +108,37 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
 
             }
 
-            out.println("<form method='post' action='updateBooking'>");
+            out.println("<form id='updateBookingForm'>");
 
             out.println("<input type='hidden' name='bookingID' value='" + bookingID + "' />");
 
-            out.println("<label>First Name:</label><br>");
-            out.println("<input type='text' name='FirstName' value='" + custFirstName + "' required><br><br>");
 
-            out.println("<label>Last Name:</label><br>");
-            out.println("<input type='text' name='LastName' value='" + custLastName + "' required><br><br>");
+            out.println("<p>" + "Hi " + custFirstName + " " + custLastName + "! Change your booking at " + hotelName + " below!" + "</p><br>");
 
-
-//
 
             out.println("<label>Room Type:</label><br>");
-            out.println("<select name='roomType' required>");
+            out.println("<select name='roomTypeID' id='roomTypeID' required>");
 
-            out.println("<option selected>" + roomType + "</option>");
+            out.println("<option value='" + currentRoomTypeID + "' selected>" + currentRoomType + "</option>");
 
             while (availableRoomTypes.next()) {
                 String availableRoomType = availableRoomTypes.getString("description");
-                out.println("<option value='" + availableRoomType + "'>" + availableRoomType + "</option>");
+                roomTypeID = availableRoomTypes.getInt("room_type_id");
+
+                if (roomTypeID != currentRoomTypeID){
+                    out.println("<option value='" + roomTypeID + "'>" + availableRoomType + "</option>");
+                }
+
+
             }
 
             out.println("</select><br><br>");
 
             out.println("<label>Check-in Date:</label><br>");
-            out.println("<input type='date' name='Check-in Date' value='" + checkinDate + "' required><br><br>");
+            out.println("<input type='date' id='checkinDate' name='Check-in Date' value='" + checkinDate + "' required><br><br>");
 
             out.println("<label>Check-out Date:</label><br>");
-            out.println("<input type='date' name='Check out Date' value='" + checkoutDate + "' required><br><br>");
+            out.println("<input type='date' id='checkoutDate' name='Check out Date' value='" + checkoutDate + "' required><br><br>");
 
 
             out.println("<button type='submit'>Update Booking</button>");

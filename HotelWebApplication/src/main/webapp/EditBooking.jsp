@@ -11,8 +11,8 @@
     <title>Update Room as a Customer</title>
     <script>
 
-        var parameters = new URLSearchParams(window.location.search);
-        var bookingID = parameters.get("bookingID")
+        const parameters = new URLSearchParams(window.location.search);
+        const bookingID = parameters.get("bookingID")
 
         fetch('getCurrentBooking', {
             method: 'POST',
@@ -24,6 +24,41 @@
 
         }).then(response => response.text()).then( html => {
             document.getElementById('bookingForm').innerHTML = html;
+
+
+            const updateForm = document.getElementById('updateBookingForm');
+            if (updateForm){
+
+                updateForm.addEventListener('submit', function(event){
+                    event.preventDefault();
+
+                    const roomTypeID = document.getElementById('roomTypeID')?.value;
+                    const checkinDate = document.getElementById('checkinDate')?.value;
+                    const checkoutDate = document.getElementById('checkoutDate')?.value;
+
+                    const bodyData =
+                        'bookingID=' + encodeURIComponent(bookingID) + '&' +
+                        // 'firstName=' + encodeURIComponent(firstName) + '&' +
+                        // 'lastName=' + encodeURIComponent(lastName) + '&' +
+                        'roomTypeID=' + encodeURIComponent(roomTypeID) + '&' +
+                        'checkinDate=' + encodeURIComponent(checkinDate) + '&' +
+                        'checkoutDate=' + encodeURIComponent(checkoutDate);
+
+                    fetch('confirmBookingChanges',{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: bodyData
+                    }).then(response => response.text()).then(result => {
+                        alert(result)
+                    })
+                })
+            }
+
+
+
+
         }).catch(error => {
             console.error('Fetch error:', error);
             document.getElementById('bookingForm').innerHTML
@@ -35,6 +70,7 @@
 
 <body>
     <div id="bookingForm"></div>
+
 
 </body>
 </html>
