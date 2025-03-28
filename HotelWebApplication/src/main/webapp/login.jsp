@@ -39,7 +39,7 @@
       let state = document.getElementById("state").value.trim();
       let ZIP = document.getElementById("ZIP").value.trim();
       let SSN = document.getElementById("SSN").value.trim();
-      if (SSN === "" || firstName === "" || lastName === "" || streetName === "" || streetNumber === "" || city === ""
+      if (firstName === "" || lastName === "" || streetName === "" || streetNumber === "" || city === ""
               || state === "" || ZIP === "" || SSN === ""){
         alert("Please fill all fields.");
         return;
@@ -53,8 +53,7 @@
               "&state=" + encodeURIComponent(state) +
               "&ZIP=" + encodeURIComponent(ZIP) +
               "&SSN=" + encodeURIComponent(SSN);
-      console.log(bodyData)
-      setTimeout(10000)
+
       fetch("UpdateCustomer", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -65,7 +64,16 @@
       }).catch(error => console.error("Error:", error));
     }
     function deleteInfo(){
-
+      let SSN = document.getElementById("SSN").value.trim();
+      let bodyData ="SSN=" + encodeURIComponent(SSN);
+      fetch("DeleteCustomer", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body:  bodyData
+      }).then(response => response.text()).then(data => {
+        console.log("success")
+        document.getElementById("response").innerHTML = data;
+      }).catch(error => console.error("Error:", error));
     }
   </script>
 </head>

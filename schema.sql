@@ -224,7 +224,7 @@ CREATE TABLE Renting (
     --
     PRIMARY KEY(renting_id),
     FOREIGN KEY (employee_id) REFERENCES Employee(employee_id) ON DELETE SET NULL,
-    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id) ON DELETE SET NULL,
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id) ON DELETE CASCADE,
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ON DELETE CASCADE,
     FOREIGN KEY (room_type_id) REFERENCES Room_Type(room_type_id) ON DELETE CASCADE,
     FOREIGN KEY (hotel_id, room_id) REFERENCES Room(hotel_id, room_id) ON DELETE CASCADE
