@@ -25,6 +25,7 @@ public class BookingsByDateServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         int hotel_id = Integer.parseInt(request.getParameter("hotel_id"));
+        int employee_id = Integer.parseInt(request.getParameter("employee_id"));
         // Date checkin =Date.valueOf(request.getParameter("checkin"));
         // Date checkout = Date.valueOf(request.getParameter("checkout"));
         // int room_val = Integer.parseInt(request.getParameter("rooms"));
@@ -97,8 +98,16 @@ public class BookingsByDateServlet extends HttpServlet {
                         "                                        <h4>"+rs.getString("first_name")+" "+rs.getString("last_name")+"</h3>\n" +
                         "                                    </div>\n" +
                         "                                    <div class=\"col\">\n" +
-                        //"                                        <a href='room.jsp?hotel_id="+String.valueOf(rs.getInt("hotel_id"))+"&hotel_name="+String.valueOf(rs.getString("hotel_name"))+"&checkin="+String.valueOf(checkin)+"&checkout="+String.valueOf(checkout)+"&rooms="+String.valueOf(room_val)+"'>"+
+
+                        //"                                       <form method='post' action='checkinBooking'>" +
+                        //"                                       <input type='hidden' name='bookingID' value='" + rs.getInt("booking_id") + "' />" +
+                        //"                                       <input type='hidden' name='employee_id' value='" + employee_id + "' />" +
+                        //"                                       <button type='submit' class='buttons'>Manage Booking</button>" +
+                        //"                                       </form>" +
+
+                        "                                        <a href='checkinBooking?bookingID="+String.valueOf(rs.getInt("booking_id"))+"&employee_id="+employee_id+"'>"+
                         "                                        <button class=\"buttons\">Manage Booking</button>\n" +
+
                         "                                        </a>"+
                         "                                    </div>\n" +
                         "                                </div>\n" +
