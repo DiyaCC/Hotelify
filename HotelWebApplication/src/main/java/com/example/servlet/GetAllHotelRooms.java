@@ -46,8 +46,7 @@ public class GetAllHotelRooms extends HttpServlet {
                         "                <h4 class=\"hotelText\">Room type: "+ rs.getString("description")+"</h4>\n" +
                         "                <h4 class=\"hotelText\">Capacity: "+ rs.getInt("capacity")+"</h4>\n" +
                         "                <h4 class=\"hotelText\">Price: $"+ rs.getFloat("price")+"</h4>\n" +
-                        "                <button class=\"buttons\" onclick='delete("+rs.getInt("room_id")+")'>Delete Room</button>\n" +
-                        "            </div>";
+                        "                </div>";
                 out.println(div);
                 if (i%3==2){
                     out.println("</div>");

@@ -86,6 +86,8 @@
                 <br>
                 <a href="EnterHotel.jsp" class="link">Update/Add Hotels</a>
                 <br>
+                <a href="modifyrooms.jsp" class="link">Add/Delete Rooms</a>
+                <br>
                 <a href="loginViaBookingID.jsp" class="link">Update Existing Booking</a>
                 <br>
                 <a href="about.jsp" class="link">About</a>

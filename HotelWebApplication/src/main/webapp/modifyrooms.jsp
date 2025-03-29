@@ -79,6 +79,7 @@
                 }).catch(error => console.error("Error:", error));
             }
         }
+
     </script>
 </head>
     <body>

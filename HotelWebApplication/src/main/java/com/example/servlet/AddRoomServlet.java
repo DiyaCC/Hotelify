@@ -55,6 +55,11 @@ public class AddRoomServlet extends HttpServlet {
                 pst1.setBoolean(7, mountainview);
                 try{
                     pst1.executeUpdate();
+
+                    String updateNumRooms = "UPDATE hotel SET num_rooms=num_rooms+1;";
+                    PreparedStatement pst2 = con.prepareStatement(updateNumRooms);
+                    pst2.executeUpdate();
+
                     out.println("Room added successfully");
                 } catch (SQLException e) {
                     out.println("Something went wrong. Try again later");
@@ -64,7 +69,8 @@ public class AddRoomServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<option value=''>Error</option>");
+            System.out.println(e.getMessage());
+            out.println("Something went wrong. Try again later");
 
         }
     }
