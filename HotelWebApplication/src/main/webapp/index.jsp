@@ -78,7 +78,7 @@
         <div id="navBar">
             <h3>HOTELIFY</h3>
             <div class="links row">
-                <a href="employee.jsp" class="link">Employee Page</a>
+                <a href="EnterEmployeeID.jsp" class="link">Employee Page</a>
                 <br>
                 <a href="login.jsp" class="link">Customer Page</a>
                 <br>
