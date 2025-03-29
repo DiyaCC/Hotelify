@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class DeleteHotelServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "";     // Change if needed
+    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -29,8 +29,31 @@ public class DeleteHotelServlet extends HttpServlet {
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
 
-            // send the deleted bookings to archive
+            // get chainID
+            String getChainID = "SELECT chain_id FROM hotel where hotel_id=" + hotelID;
+            Statement stmt = con.createStatement();
+            ResultSet chain = stmt.executeQuery(getChainID);
+            chain.next();
+            int chainID = chain.getInt("chain_id");
 
+            // reduce the number of hotels in the chain
+            // get the current number of hotels
+            String reduceNumHotels = "SELECT num_hotels FROM hotel_chain where chain_id = ?";
+            PreparedStatement pst5 = con.prepareStatement(reduceNumHotels);
+            pst5.setInt(1, chainID);
+            ResultSet num = pst5.executeQuery();
+            num.next();
+            int numHotels = num.getInt("num_hotels");
+
+            // update the chain
+            String updateNumHotels = "UPDATE hotel_chain SET num_hotels = ? WHERE chain_id = ?";
+            PreparedStatement pst1 = con.prepareStatement(updateNumHotels);
+            pst1.setInt(1, numHotels -1);
+            pst1.setInt(2, chainID);
+            pst1.executeUpdate();
+
+
+            // send the deleted bookings to archive
             String getHotelBookings = "SELECT * FROM booking WHERE hotel_id = ?";
             PreparedStatement pst = con.prepareStatement(getHotelBookings);
             pst.setInt(1, hotelID);
@@ -94,6 +117,7 @@ public class DeleteHotelServlet extends HttpServlet {
             PreparedStatement ps = con.prepareStatement(deleteHotel);
             ps.setInt(1, hotelID);
             ps.executeUpdate();
+
 
             out.print("Hotel deleted.");
 
