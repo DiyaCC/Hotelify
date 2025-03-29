@@ -10,9 +10,30 @@
   <div class="links row">
     <a href="index.jsp">Home</a>
     <br>
+    <a href="EnterSSN.jsp" class="link">Book a Room</a>
+    <br>
     <a href="Hotels.jsp" class="link">Hotels</a>
+    <br>
+    <a href="#" id="manageBookingsLink" class="link">Manage Bookings</a>
   </div>
 </div>
+
+<script>
+  // Get URL parameters from the current page URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const hotelID = urlParams.get('hotel_id');
+  const employeeID = urlParams.get('employee_id');
+
+  // Check if hotelID and employeeID are present
+  if (hotelID && employeeID) {
+    // Get the "Manage Bookings" link element by ID
+    const manageBookingsLink = document.getElementById('manageBookingsLink');
+    // Update its href to include the hotel_id and employee_id as query parameters
+    manageBookingsLink.href = `manageBookings.jsp?hotel_id=${hotelID}&employee_id=${employeeID}`;
+  }
+</script>
+
+<%--
 <h2>Confirm Room Bookings</h2>
   <div id = "roomSelect"> </div>
   <script>
@@ -23,6 +44,6 @@
     }
     window.onload = loadBookings;
   </script>
-
+--%>
 </body>
 </html>
