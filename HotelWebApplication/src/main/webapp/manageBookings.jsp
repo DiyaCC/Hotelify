@@ -4,26 +4,13 @@
   <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
   <script>
     function searchForBookings(){
-      // document.getElementById("invalidInputChain_Name").classList.add("hidden")
-      // document.getElementById("invalidInputHotel_Name").classList.add("hidden")
+
       document.getElementById("invalidInputCheckin").classList.add("hidden")
-
-      // document.getElementById("invalidInputCheckout").classList.add("hidden")
-      // document.getElementById("invalidInputRooms").classList.add("hidden")
-      // var destination = document.getElementById("destination").value;
-
-      // var chain_name = document.getElementById("Chain_Name").value;
-      // var hotel_name = document.getElementById("Hotel_Name").value;
       var checkin = document.getElementById("Check-in").value;
-
-      // var checkout = document.getElementById("Check-out").value;
-      // var rooms = document.getElementById("Rooms").value;
-      // var stars = document.getElementById("stardrop").value;
-
       var valid = validate(checkin)
 
       if (valid){
-        var url = `bookingsByDate?hotel_id=${encodeURIComponent(hotel_id)}&checkin=${encodeURIComponent(checkin)}`
+        var url = `bookingsByDate?hotel_id=${encodeURIComponent(hotel_id)}&checkin=${encodeURIComponent(checkin)}&employee_id=${encodeURIComponent(employee_id)}`
         fetch(url).then(response => response.text()).then(data => {
           if (!data){
             const notFound = `<div class="widgetRow row"><h4>No Results Found :(</h4></div>`
@@ -50,6 +37,8 @@
     }
 
   </script>
+
+
 </head>
 <body>
 
