@@ -15,7 +15,7 @@ public class ConnectionTest {
     private final String dbServerPort = "5432";
     private final String dbName = "postgres";
     private final String dbusername = "postgres";
-    private final String dbpassword = "Matara!92222";
+    private final String dbpassword = "";
 
 
     private Connection con = null;
