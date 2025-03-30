@@ -84,11 +84,17 @@
                 <br>
                 <a href="Hotels.jsp" class="link">Search For Hotels</a>
                 <br>
-                <a href="EnterHotel.jsp" class="link">Update/Add Hotels</a>
+                <a href="EnterHotel.jsp" class="link">Update/Delete Hotels</a>
                 <br>
-                <a href="modifyrooms.jsp" class="link">Add/Delete Rooms</a>
+
+                <a href="AddHotel.jsp" class="link">Add hotel</a>
+                <br>
+                <a href="AddChain.jsp" class="link">Add Chain</a>
+                <br>
+                <a href="EnterChain.jsp" class="link">Add/Delete Chains</a>
                 <br>
                 <a href="loginViaBookingID.jsp" class="link">Update Existing Booking</a>
+                <a href="modifyrooms.jsp" class="link">Add/Delete Rooms</a>
                 <br>
                 <a href="about.jsp" class="link">About</a>
             </div>

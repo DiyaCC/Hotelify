@@ -1,3 +1,4 @@
+
 package com.example.servlet;
 
 import java.io.IOException;
@@ -10,8 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/getHotels")
-public class GetHotelsandIDsServlet extends HttpServlet {
+@WebServlet("/getChains")
+public class GetHotelChainsServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
     private static final String JDBC_PASS = "";     // Change if needed
@@ -22,25 +23,23 @@ public class GetHotelsandIDsServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-
         try{
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
 
-            String SQL = "SELECT hotel_name,hotel_id from hotel";
-            PreparedStatement ps = con.prepareStatement(SQL);
-            ResultSet rs = ps.executeQuery();
+            String getChains = "SELECT chain_id, chain_name FROM hotel_chain";
+            PreparedStatement pst = con.prepareStatement(getChains);
+            ResultSet rs = pst.executeQuery();
 
-
-            out.println("<form action='ModifyHotel.jsp' method='get'>");
-            out.println("<p>Select a Hotel to Update</p><br>");
-            out.println("<label>Hotel Name:</label><br>");
-            out.println("<select name='hotelID' id='hotelID' required>");
+            out.println("<form action='ModifyChain.jsp' method='get'>");
+            out.println("<p>Select a Chain to Update</p><br>");
+            out.println("<label>Chain Name:</label><br>");
+            out.println("<select name='chainID' id='chainID' required>");
 
             while (rs.next()) {
-                String hotelName = rs.getString("hotel_name");
-                int hotelID = rs.getInt("hotel_id");
-                out.println("<option value='" + hotelID + "'>" + hotelName + "</option>");
+                String chainName = rs.getString("chain_name");
+                int chainID = rs.getInt("chain_id");
+                out.println("<option value='" + chainID + "'>" + chainName + "</option>");
             }
 
             out.println("</select><br><br>");
@@ -50,7 +49,8 @@ public class GetHotelsandIDsServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<option value=''>Error</option>");
+            System.out.println(e.getMessage());
+            out.println("Something went wrong. Try again later");
 
         }
     }
