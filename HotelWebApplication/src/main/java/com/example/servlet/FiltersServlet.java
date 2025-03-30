@@ -88,7 +88,7 @@ public class FiltersServlet extends HttpServlet {
                 String dates = "DELETE FROM tempFiltered\n" +
                         "WHERE hotel_id in (\n" +
                         "\tSELECT hotel_id \n" +
-                        "\tFROM availableRooms\n" +
+                        "\tFROM availableRoomsForHotels\n" +
                         "\tWHERE available=0)";
                 stmt.executeUpdate(dates);
             }
@@ -108,7 +108,7 @@ public class FiltersServlet extends HttpServlet {
                         "                <h3 class=\"hotelText\">"+ rs.getString("hotel_name")+"</h3>\n" +
                         "                <h4 class=\"hotelText\">"+ rs.getString("chain_name")+"</h4>\n" +
                         "                <h4 class=\"hotelText\">"+ rs.getInt("star_rating")+" Stars</h4>\n" +
-                        "                <button class=\"buttons\" onclick='backToRooms("+rs.getInt("hotel_id")+" +)'>Book now</button>\n" +
+                        "                <button class=\"buttons\" onclick='backToRooms("+rs.getInt("hotel_id")+")'>Book now</button>\n" +
                         "            </div>";
                 out.println(div);
             }

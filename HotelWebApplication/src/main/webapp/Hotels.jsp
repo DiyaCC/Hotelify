@@ -10,7 +10,7 @@
             var checkin = document.getElementById("checkin").value || '0000-00-00'
             var checkout = document.getElementById("checkout").value || '0000-00-00'
 
-            var rooms=0
+            var rooms=1
 
             fetch(`${window.location.origin}<%= request.getContextPath() %>/hotelID?hotel_id=${hotel_id}`).then(response => response.text()).then(data => {
                 console.log(encodeURIComponent(data.trim()))
