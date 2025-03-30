@@ -51,6 +51,9 @@
                 document.getElementById("details").innerHTML=data
             })
         }
+        function returnHome() {
+            window.location.href = `index.jsp`
+        }
 
     </script>
 </head>
