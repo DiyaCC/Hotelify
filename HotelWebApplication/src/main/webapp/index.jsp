@@ -91,7 +91,7 @@
                 <br>
                 <a href="AddChain.jsp" class="link">Add Chain</a>
                 <br>
-                <a href="EnterChain.jsp" class="link">Add/Delete Chains</a>
+                <a href="EnterChain.jsp" class="link">Update/Delete Chains</a>
                 <br>
                 <a href="loginViaBookingID.jsp" class="link">Update Existing Booking</a>
                 <a href="modifyrooms.jsp" class="link">Add Rooms</a>

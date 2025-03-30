@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class GetCurrentChainInfoServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "";     // Change if needed
+    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -42,7 +42,7 @@ public class GetCurrentChainInfoServlet extends HttpServlet {
 
                 out.println("<label for='chainName'>Chain Name:</label><br>");
                 out.println("<input type='text' name='chainName' id='chainName' value='" + chainName + "' required><br><br>");
-
+                out.println("<input type='submit' value='Update Chain' >");
 
                 out.println("</form>");
 

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class GetCurrentBookingInfoServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "";     // Change if needed
+    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -49,6 +49,8 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
             String getAvailableRoomTypes = null;
             ResultSet availableRoomTypes = null;
 
+            String contactEmail = null;
+
 
 
             String getBooking = "SELECT * FROM booking WHERE booking_id::TEXT = ?";
@@ -79,12 +81,13 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
 
 
                 int hotelID = booking.getInt("hotel_id");
-                getHotel = "SELECT hotel_name FROM hotel WHERE hotel_id::TEXT = ? ";
+                getHotel = "SELECT hotel_name, contact_email FROM hotel WHERE hotel_id::TEXT = ? ";
                 PreparedStatement stmt4 = con.prepareStatement(getHotel);
                 stmt4.setString(1, String.valueOf(hotelID));
                 ResultSet rs4 = stmt4.executeQuery();
                 while (rs4.next()){
                     hotelName = rs4.getString("hotel_name");
+                    contactEmail = rs4.getString("contact_email");
                 }
 
 
@@ -142,6 +145,7 @@ public class GetCurrentBookingInfoServlet extends HttpServlet {
 
 
             out.println("<button type='submit' class='buttons'>Update Booking</button>");
+            out.print("<p> Contact " + contactEmail + " to cancel your booking.");
             out.println("</form>");
 
 

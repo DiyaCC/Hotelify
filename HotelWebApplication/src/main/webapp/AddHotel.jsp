@@ -52,10 +52,10 @@
     <input type="number" name="phone" id="phone" required><br><br>
 
     <label for="starRating">Star Rating:</label><br>
-    <input type="text" name="starRating" id="starRating" min="1" max="5" required><br><br>
+    <input type="number" name="starRating" id="starRating" min="1" max="5" required><br><br>
 
     <label for="numRooms">Number of Expected Rooms:</label><br>
-    <input type="text" name="numRooms" id="numRooms" min="1" required><br><br>
+    <input type="number" name="numRooms" id="numRooms" min="1" required><br><br>
 
     <input type="submit" value="Add Hotel">
 
