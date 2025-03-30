@@ -22,7 +22,7 @@ public class GetCheckinInfoServlet extends HttpServlet {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Volume9794";     // Change if needed
+    private static final String JDBC_PASS = "V";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
