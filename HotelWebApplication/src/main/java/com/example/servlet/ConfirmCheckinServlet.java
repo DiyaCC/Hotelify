@@ -10,7 +10,7 @@ import jakarta.servlet.http.*;
 public class ConfirmCheckinServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres";
-    private static final String JDBC_PASS = "Volume9794";
+    private static final String JDBC_PASS = "";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
