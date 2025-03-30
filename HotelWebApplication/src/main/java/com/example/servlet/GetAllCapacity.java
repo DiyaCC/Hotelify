@@ -15,7 +15,7 @@ public class GetAllCapacity extends HttpServlet {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,7 +41,6 @@ public class GetAllCapacity extends HttpServlet {
 
             ps = con.prepareStatement("SELECT hotel_name, total_capacity FROM hotel_capacity");
             ResultSet rs = ps.executeQuery();
-            rs.next();
 
             out.println("<table><tr><th>Hotel</th><th>Total Capacity</th></tr>");
             while (rs.next()){
