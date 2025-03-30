@@ -259,3 +259,20 @@ CREATE TABLE Archive_Renting (
     --
     PRIMARY KEY(renting_id)
 );
+
+-- Index for booking availability lookups
+CREATE INDEX index_booking_hotel_room_dates
+ON booking(hotel_id, room_type_id, checkin_date, checkout_date);
+
+-- Index for renting overlap date checks
+CREATE INDEX index_renting_room_dates
+ON renting(room_id, checkin_date, checkout_date);
+
+-- Index for room availability by hotel and type
+CREATE INDEX index_room_hotel_type
+ON room(hotel_id, room_type_id);
+
+-- Indexes for customer-person join via SSN
+CREATE INDEX index_customer_ssn ON customer(ssn);
+CREATE INDEX index_person_ssn ON person(ssn);
+
