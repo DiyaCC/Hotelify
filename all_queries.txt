@@ -1,0 +1,444 @@
+AddChainServlet.java
+String addHotel = "INSERT INTO hotel_chain (chain_name, num_hotels) VALUES (?, ?)";
+
+
+
+
+
+AddCustomerAccountServlet.java
+String addPerson = "INSERT INTO Person (first_name, last_name, street_name, street_number, city, state, zip, SSN) VALUES (?, ?, ?, ?, ?, ?, ?, ?); ";
+String addCustomer = "INSERT INTO Customer (SSN) VALUES (?);";
+
+
+
+
+
+AddHotelServlet.java
+String addHotel = "INSERT INTO Hotel (" +
+                    "    chain_id, hotel_name, street_number, street_name,\n" +
+                    "    city, state, zip, contact_email, star_rating, num_rooms\n" +
+                    ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+String reduceNumHotels = "SELECT num_hotels FROM hotel_chain where chain_id = ?";
+String updateNumHotels = "UPDATE hotel_chain SET num_hotels = ? WHERE chain_id = ?"; // ? is replaced by numHotels + 1
+
+
+
+
+
+AddRoomServlet.java
+String create_view = "SELECT * FROM ROOM WHERE room_number=?";
+String createRoom = "INSERT INTO room (hotel_id, room_number, room_type_id, price, capacity, sea_view, mountain_view)" +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+String updateNumRooms = "UPDATE hotel SET num_rooms=num_rooms+1;";
+
+
+
+
+AllHotelsServlet.java
+String create_view = "CREATE OR REPLACE VIEW allHotels as \n" +
+                    "SELECT hotel_id, hotel_name, chain_name, num_rooms, city, star_rating, price, capacity\n" +
+                    "FROM\n" +
+                    "(SELECT hotel_id, chain_name, star_rating, hotel_name, num_rooms, city\n" +
+                    "FROM HOTEL NATURAL JOIN Hotel_chain)\n" +
+                    "NATURAL JOIN\n" +
+                    "ROOM";
+String sql = "SELECT DISTINCT hotel_id, hotel_name, chain_name, star_rating\n" +
+                    "FROM allHotels";
+
+
+
+
+AreasServlet.java
+String create_view = "CREATE OR REPLACE VIEW allAreas as\n" +
+                    "\tSELECT city, sum(available) as rooms\n" +
+                    "\tFROM\n" +
+                    "\t\t(SELECT DISTINCT Hotel_Chain.chain_name, rooms.hotel_id, rooms.hotel_name, rooms.num_rooms-rooms.booked_count as available , rooms.star_rating, rooms.city\n" +
+                    "\t\tFROM\n" +
+                    "\t\t(select h.chain_id, h.hotel_id, h.hotel_name, coalesce(m.count, 0) as booked_count, h.num_rooms, h.star_rating, h.city\n" +
+                    "\t\tfrom (select hotel_id, count(booking_id)\n" +
+                    "\t\tfrom booking\n" +
+                    "\t\twhere NOT cancelled and ('"+checkin+"', '"+checkout+"') OVERLAPS (checkin_date, checkout_date)\n" +
+                    "\t\tgroup by hotel_id, booking_id) as m\n" +
+                    "\t\tright outer join hotel h\n" +
+                    "\t\ton h.hotel_id = m.hotel_id) as rooms\n" +
+                    "\t\tNATURAL JOIN Hotel_chain)\n" +
+                    "\tgroup by city";
+
+String sql = "SELECT * FROM allAreas;";
+
+
+
+
+
+AvailableHotelsServlet.java
+String sql_temp =
+                    "create or replace view availableRooms as\n" +
+                            "\tSELECT DISTINCT Hotel_Chain.chain_name, rooms.hotel_id, rooms.hotel_name, rooms.num_rooms-rooms.booked_count as available , rooms.star_rating, rooms.city\n" +
+                            "\tFROM\n" +
+                            "\t\t(select h.chain_id, h.hotel_id, h.hotel_name, coalesce(m.count, 0) as booked_count, h.num_rooms, h.star_rating, h.city\n" +
+                            "\t\tfrom (select hotel_id, count(booking_id)\n" +
+                            "\t\t\t\tfrom booking\n" +
+                            "\t\t\t\twhere NOT cancelled and ('"+checkin+"','"+checkout+"') OVERLAPS (checkin_date, checkout_date)\n" +
+                            "\t\t\t\tgroup by hotel_id, booking_id) as m\n" +
+                            "\t\tright outer join hotel h\n" +
+                            "\t\ton h.hotel_id = m.hotel_id) as rooms\n" +
+                            "\tNATURAL JOIN Hotel_chain;\n";
+
+String sql_query = "SELECT * from availableRooms WHERE city=? and star_rating>=? and available>=?;";    
+
+
+
+
+
+
+AvailableRoomTypesServlet.java
+String query = "DROP TABLE IF EXISTS book;\n" +
+                    "DROP TABLE IF EXISTS total_rooms;\n" +
+                    "\n" +
+                    "\n" +
+                    "CREATE TEMPORARY TABLE book as\n" +
+                    "\tSELECT DISTINCT r.room_type_id, q.booked\n" +
+                    "\tFROM Room r\n" +
+                    "\tLEFT JOIN\n" +
+                    "\t(SELECT room_type_id, count(room_type_id) as booked\n" +
+                    "\t\tFROM Booking \n" +
+                    "\t\tWHERE hotel_id = ?\n" +
+                    "\t\tAND (?, ?) OVERLAPS (checkin_date, checkout_date)\n" +
+                    "\tGROUP BY room_type_id) as q\n" +
+                    "\tON r.room_type_id=q.room_type_id\n" +
+                    "\tWHERE r.hotel_id=?;";
+
+String query2 = "UPDATE book SET booked=0 WHERE booked IS NULL;\n";
+
+String query3= "CREATE TEMPORARY TABLE total_rooms as\n" +
+                    "(SELECT *\n" +
+                    "FROM\n" +
+                    "\t(SELECT DISTINCT\n" +
+                    "\t\tA.room_type_id,\n" +
+                    "\t\tA.hotel_id,\n" +
+                    "\t\tB.description,\n" +
+                    "\t\tcount(A.room_type_id) as total_rooms\n" +
+                    "\tFROM ROOM A\n" +
+                    "\tLEFT JOIN Room_Type B\n" +
+                    "\t\tON B.room_type_id = A.room_type_id\n" +
+                    "\tGROUP BY A.room_type_id, B.description, A.hotel_id\n" +
+                    "));";
+
+String query4 = "SELECT *\n" +
+                    "FROM \n" +
+                    "\t((SELECT *\n" +
+                    "\tFROM \n" +
+                    "\ttotal_rooms NATURAL JOIN book\n" +
+                    "\tWHERE hotel_id=? and total_rooms-booked>=?) as rooms\n" +
+                    "\tLEFT OUTER JOIN\n" +
+                    "\t\t(SELECT ROOM_AMENITY.room_type_id as r, AMENITY.type\n" +
+                    "\t\tFROM ROOM_AMENITY NATURAL JOIN AMENITY) as E\n" +
+                    "\tON rooms.room_type_id = E.r)\n" +
+                    "\n";
+
+
+
+
+BookingsByDateServlet.java
+String sql_temp =
+                    "create or replace view bookingsByDate as\n" +
+                            "\tSELECT DISTINCT A.booking_id, A.customer_id, C.first_name, C.last_name, A.hotel_id, E.hotel_name, E.chain_id, F.chain_name, A.room_type_id, D.description as room_type, A.confirmation_date, A.checkin_date, A.checkout_date, A.cancelled\n" +
+                            "\tFROM booking A\n" +
+                            "\tLEFT JOIN customer B\n" +
+                            "\tON B.customer_id = A.customer_id\n" +
+                            "\tLEFT JOIN person C\n" +
+                            "\tON C.SSN = B.SSN\n" +
+                            "\tLEFT JOIN room_type D\n" +
+                            "\tON D.room_type_id = A.room_type_id\n" +
+                            "\tLEFT JOIN hotel E\n" +
+                            "\tON E.hotel_id = A.hotel_id\n" +
+                            "\tLEFT JOIN hotel_chain F\n" +
+                            "\tON F.chain_id = E.chain_id\n" +
+                            ";";
+
+sql_query = "SELECT * FROM bookingsByDate WHERE hotel_id = ? AND checkin_date = ?";
+sql_query = "SELECT * FROM bookingsByDate WHERE hotel_id = ?";
+
+
+
+BookNowServlet.java
+String getID = "SELECT customer_id FROM customer WHERE SSN = ?";
+String SQL = "INSERT INTO booking (customer_id, hotel_id, room_type_id, checkin_date, checkout_date) VALUES (?, ?, ?, ?, ?);";
+String select = "SELECT lastval() from booking";
+
+
+
+
+calculateCapacityServlet.java
+String query = "CREATE OR REPLACE VIEW hotel_capacity AS \n" +
+                    "\tSELECT h.hotel_id, h.hotel_name, COALESCE(c.total_capacity, 0) AS total_capacity\n" +
+                    "\tFROM \n" +
+                    "\t\t(SELECT hotel_id, sum(capacity) as total_capacity\n" +
+                    "\t\t\tFROM room\n" +
+                    "\t\t\tGROUP BY hotel_id) as c\n" +
+                    "\t\tRIGHT OUTER JOIN Hotel as h\n" +
+                    "\t\tON h.hotel_id=c.hotel_id;\n";
+ps = con.prepareStatement("SELECT * FROM hotel_capacity WHERE hotel_id=?");    
+
+
+
+
+
+
+
+ConfirmBookingChangesServlet.java
+String changeBookingQuery = "UPDATE booking " +
+                    "SET room_type_id = ?, checkin_date = ?, checkout_date = ? " +
+                    "WHERE booking_id = ?";
+
+
+
+
+
+ConfirmCheckinServlet.java
+String getBookingSQL = "SELECT * FROM booking WHERE booking_id = ?";
+String insertSQL = "INSERT INTO renting (employee_id, booking_id, customer_id, room_type_id, hotel_id, room_id, checkin_date, checkout_date, payment_method, payment_date) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
+                           
+String archiveSQL = "INSERT INTO Archive_Booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+
+DeleteChainServlet.java
+String getHotels = "SELECT hotel_id FROM hotel where chain_id = ?";
+String getHotelBookings = "SELECT * FROM booking WHERE hotel_id = ?";
+String addToArchive = "INSERT INTO archive_booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) VALUES (?,?,?,?,?,?,?)";
+String getHotelRentings = "SELECT * FROM renting WHERE hotel_id = ?";
+String addToArchive = "INSERT INTO archive_renting VALUES (?,?,?,?,?,?,?,?,?)";
+String deleteHotels = "DELETE FROM hotel WHERE chain_id = ?";
+String deleteChain = "DELETE from hotel_chain where chain_id=?";
+
+
+
+
+DeleteCustomer.java
+String customerID = "SELECT customer_id FROM Customer WHERE SSN=?";
+String booking = "SELECT * FROM booking WHERE customer_id=?";
+String exists = "SELECT * FROM Archive_Booking WHERE booking_id=?";
+String archive = "INSERT INTO Archive_Booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) " +
+                            "VALUES (?,?,?,?,?,?,?)";
+String renting = "SELECT * FROM renting WHERE customer_id=?";
+String exists = "SELECT * FROM Archive_Renting WHERE renting_id=?";
+String archive = "INSERT INTO Archive_Renting (renting_id, employee_id, booking_id, customer_id, room_type_id, room_id, checkin_date, checkout_date, cancelled) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+String customer = "DELETE FROM customer WHERE customer_id=?";
+String person = "DELETE FROM person WHERE SSN=?";
+
+
+
+
+
+
+DeleteHotelServlet.java
+String getChainID = "SELECT chain_id FROM hotel where hotel_id=" + hotelID;
+String reduceNumHotels = "SELECT num_hotels FROM hotel_chain where chain_id = ?";
+String updateNumHotels = "UPDATE hotel_chain SET num_hotels = ? WHERE chain_id = ?";
+String getHotelBookings = "SELECT * FROM booking WHERE hotel_id = ?";
+String addToArchive = "INSERT INTO archive_booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) VALUES (?,?,?,?,?,?,?)";
+String getHotelRentings = "SELECT * FROM renting WHERE hotel_id = ?";
+String addToArchive = "INSERT INTO archive_renting VALUES (?,?,?,?,?,?,?,?,?)";
+String deleteHotel = "DELETE from hotel where hotel_id=?";
+
+
+DropdownHotels.java
+String sql= "SELECT hotel_id, hotel_name\n" +
+                    "FROM hotel";
+
+
+
+
+FetchConfirmationDetails.java
+String sql = "SELECT hotel_name FROM hotel WHERE hotel_id = ?";
+sql = "SELECT description FROM Room_Type WHERE room_type_id=?";
+
+
+
+
+FetchCustomer.java
+String searchSSN = "SELECT SSN FROM customer WHERE SSN::TEXT = ?";
+String custName = "SELECT * FROM person WHERE SSN::TEXT = ?";
+
+
+
+FetchRoomTypes.java
+String sql= "SELECT room_type_id, description FROM room_type";
+
+
+
+FiltersServlet.java
+String drop_existing = "DROP TABLE IF EXISTS tempFiltered;";
+String createTemp = "CREATE TEMP TABLE tempFiltered as\n" +
+                    "SELECT * FROM allHotels;" ;
+
+
+String cities = "DELETE FROM tempFiltered\n" +
+                        "WHERE city!='"+city+"';";
+String chain = "DELETE FROM tempFiltered WHERE chain_name!='"+hotelChain+"';";
+String min = "DELETE FROM tempFiltered WHERE price<"+minprice+";";
+String max = "DELETE FROM tempFiltered WHERE price>"+maxprice+";";
+
+String total = "DELETE FROM tempFiltered WHERE num_rooms<"+totalHotelRooms+";";
+String room = "DELETE FROM tempFiltered WHERE capacity<"+roomSize+";";
+String sql_temp =
+                "create or replace view availableRoomsForHotels as\n" +
+                        "\tSELECT DISTINCT Hotel_Chain.chain_name, rooms.hotel_id, rooms.hotel_name, rooms.num_rooms-rooms.booked_count as available , rooms.star_rating, rooms.city\n" +
+                        "\tFROM\n" +
+                        "\t\t(select h.chain_id, h.hotel_id, h.hotel_name, coalesce(m.count, 0) as booked_count, h.num_rooms, h.star_rating, h.city\n" +
+                        "\t\tfrom (select hotel_id, count(booking_id)\n" +
+                        "\t\t\t\tfrom booking\n" +
+                        "\t\t\t\twhere NOT cancelled and ('"+checkin+"','"+checkout+"') OVERLAPS (checkin_date, checkout_date)\n" +
+                        "\t\t\t\tgroup by hotel_id, booking_id) as m\n" +
+                        "\t\tright outer join hotel h\n" +
+                        "\t\ton h.hotel_id = m.hotel_id) as rooms\n" +
+                        "\tNATURAL JOIN Hotel_chain;\n";
+
+String dates = "DELETE FROM tempFiltered\n" +
+                        "WHERE hotel_id in (\n" +
+                        "\tSELECT hotel_id \n" +
+                        "\tFROM availableRooms\n" +
+                        "\tWHERE available=0)";
+
+String stars = "DELETE FROM tempFiltered WHERE star_rating<"+star+";";
+String sql = "SELECT DISTINCT hotel_id, hotel_name, chain_name, star_rating\n" +
+                    "FROM tempFiltered";
+
+
+
+GetAllCapacity.java
+String query = "CREATE OR REPLACE VIEW hotel_capacity AS \n" +
+                    "\tSELECT h.hotel_id, h.hotel_name, COALESCE(c.total_capacity, 0) AS total_capacity\n" +
+                    "\tFROM \n" +
+                    "\t\t(SELECT hotel_id, sum(capacity) as total_capacity\n" +
+                    "\t\t\tFROM room\n" +
+                    "\t\t\tGROUP BY hotel_id) as c\n" +
+                    "\t\tRIGHT OUTER JOIN Hotel as h\n" +
+                    "\t\tON h.hotel_id=c.hotel_id;\n";
+
+ps = con.prepareStatement("SELECT hotel_name, total_capacity FROM hotel_capacity");
+
+
+
+
+
+
+GetAllHotelRooms.java
+String sql = "SELECT * FROM room NATURAL JOIN room_type WHERE hotel_id=? ORDER BY room_number";
+
+
+GetCheckinInfoServlet.java
+String getBooking = "SELECT * FROM booking WHERE booking_id::TEXT = ?";
+getCustName = "SELECT first_name, last_name FROM customer inner join person on customer.ssn = person.ssn and customer_id::TEXT = ?";
+getRoomType = "SELECT description FROM room_type WHERE room_type_id::TEXT = ? ";
+getHotel = "SELECT hotel_name FROM hotel WHERE hotel_id::TEXT = ? ";
+getAvailableRoomTypes =
+                        "SELECT DISTINCT C.description, C.room_type_id " +
+                                "FROM hotel A " +
+                                "INNER JOIN room B " +
+                                "ON B.hotel_id = A.hotel_id " +
+                                "INNER JOIN room_type C " +
+                                "ON C.room_type_id = B.room_type_id " +
+                                "WHERE A.hotel_id::TEXT = ?";
+
+getAvailableRooms = "SELECT DISTINCT " +
+                    "   A.room_id, " +
+                    "   A.room_number, " +
+                    "   C.description AS room_type, " +
+                    "   A.price, " +
+                    "   A.capacity, " +
+                    "   A.sea_view, " +
+                    "   A.mountain_view, " +
+                    "   STRING_AGG(distinct E.description, ', ') AS amenities, " +
+                    "   STRING_AGG(distinct G.type, ', ') AS extendable " +
+                    "FROM room A " +
+                    "LEFT JOIN room_type C " +
+                    "   ON A.room_type_id = C.room_type_id " +
+                    "LEFT JOIN room_amenity D " +
+                    "   ON A.room_type_id = D.room_type_id " +
+                    "LEFT JOIN amenity E " +
+                    "   ON D.amenity_id = E.amenity_id " +
+                    "LEFT JOIN Is_Extendable F " +
+                    "   ON A.room_type_id = F.room_type_id " +
+                    "LEFT JOIN extension G " +
+                    "   ON F.extension_id = G.extension_id " +
+                    "WHERE A.hotel_id::TEXT = ? " +
+                    "   AND A.room_type_id::TEXT = ? " +
+                    "   AND A.room_id NOT IN (SELECT DISTINCT B.room_id " +
+                                                "FROM renting B " +
+                                                "WHERE B.hotel_id = A.hotel_id " +
+                                                    "AND (?, ?) OVERLAPS (B.checkin_date, B.checkout_date)) " +
+                    "GROUP BY A.room_id, A.room_number, C.description, A.price, A.capacity, A.sea_view, A.mountain_view";   
+
+
+
+
+
+GetCurrentBookingInfoServlet.java
+String getBooking = "SELECT * FROM booking WHERE booking_id::TEXT = ?";
+getCustName = "SELECT first_name, last_name FROM customer inner join person on customer.ssn = person.ssn and customer_id::TEXT = ?";
+getRoomType = "SELECT description FROM room_type WHERE room_type_id::TEXT = ? ";
+getHotel = "SELECT hotel_name FROM hotel WHERE hotel_id::TEXT = ? ";  
+getAvailableRoomTypes =
+                        "SELECT DISTINCT C.description, C.room_type_id " +
+                        "FROM hotel A " +
+                                "INNER JOIN room B " +
+                                "ON B.hotel_id = A.hotel_id " +
+                                "INNER JOIN room_type C " +
+                                "ON C.room_type_id = B.room_type_id " +
+                                "WHERE A.hotel_id::TEXT = ?";
+
+
+
+
+
+GetCurrentChainInfoServlet.java
+String getHotelInfo = "select * from hotel_chain where chain_id = ?";
+
+
+GetCurrentHotelInfoServlet.java
+String getHotelInfo = "select * from hotel where hotel_id = ?";
+
+
+GetHotelChainsServlet.java
+String getChains = "SELECT chain_id, chain_name FROM hotel_chain";
+
+
+GetHotelsandIDsServlet.java
+String SQL = "SELECT hotel_name,hotel_id from hotel";
+
+
+HotelFromHotelID.java
+String SQL = "SELECT hotel_name from hotel where hotel_id=?";
+
+
+SearchBookingIDServlet.java
+String searchBookingID = "SELECT booking_id FROM Booking WHERE booking_id::TEXT = ?";
+
+SearchEmployeeIDServlet.java
+String search_Employee_ID = "SELECT hotel_id, employee_id as Employee_ID FROM employee WHERE employee_id::TEXT = ?";
+String employeeName = "SELECT A.first_name FROM person A INNER JOIN employee B ON B.SSN = A.SSN WHERE employee_id::TEXT = ?";
+
+
+SearchSSNServlet.java
+String searchSSN = "SELECT SSN FROM customer WHERE SSN::TEXT = ?";
+String custName = "SELECT first_name FROM person WHERE SSN::TEXT = ?";
+
+
+UpdateChainServlet.java
+String updateChain = "UPDATE hotel_chain SET chain_name=? WHERE chain_id=?";
+
+
+UpdateCustomer.java
+String searchSSN = "UPDATE person SET first_name=?, last_name=?, street_number=?, street_name=?, city=?, state=?, ZIP=? WHERE SSN=?";
+
+
+UpdateHotelServlet.java
+String updateHotel = "UPDATE hotel SET street_number=?,street_name=?, city=?, state=?, zip=?, contact_email=?, star_rating=?, num_rooms=? WHERE hotel_id=?";
+
