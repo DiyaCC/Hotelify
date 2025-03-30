@@ -39,7 +39,7 @@ public class GetAllCapacity extends HttpServlet {
             PreparedStatement ps = con.prepareStatement(query);
             ps.executeUpdate();
 
-            ps = con.prepareStatement("SELECT hotel_name, total_capacity FROM hotel_capacity");
+            ps = con.prepareStatement("SELECT * FROM hotel_capacity");
             ResultSet rs = ps.executeQuery();
 
             out.println("<table><tr><th>Hotel</th><th>Total Capacity</th></tr>");
