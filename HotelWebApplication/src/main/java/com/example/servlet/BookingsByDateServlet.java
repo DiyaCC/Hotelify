@@ -15,7 +15,7 @@ public class BookingsByDateServlet extends HttpServlet {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+    private static final String JDBC_PASS = "Volume9794";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,16 +43,17 @@ public class BookingsByDateServlet extends HttpServlet {
                             "\tSELECT DISTINCT A.booking_id, A.customer_id, C.first_name, C.last_name, A.hotel_id, E.hotel_name, E.chain_id, F.chain_name, A.room_type_id, D.description as room_type, A.confirmation_date, A.checkin_date, A.checkout_date, A.cancelled\n" +
                             "\tFROM booking A\n" +
                             "\tLEFT JOIN customer B\n" +
-                            "\tON B.customer_id = A.customer_id\n" +
+                            "\t     ON B.customer_id = A.customer_id\n" +
                             "\tLEFT JOIN person C\n" +
-                            "\tON C.SSN = B.SSN\n" +
+                            "\t     ON C.SSN = B.SSN\n" +
                             "\tLEFT JOIN room_type D\n" +
-                            "\tON D.room_type_id = A.room_type_id\n" +
+                            "\t     ON D.room_type_id = A.room_type_id\n" +
                             "\tLEFT JOIN hotel E\n" +
-                            "\tON E.hotel_id = A.hotel_id\n" +
+                            "\t     ON E.hotel_id = A.hotel_id\n" +
                             "\tLEFT JOIN hotel_chain F\n" +
-                            "\tON F.chain_id = E.chain_id\n" +
-                            ";";
+                            "\t     ON F.chain_id = E.chain_id\n" +
+                            "\tWHERE A.booking_id NOT IN (SELECT DISTINCT X.booking_id " +
+                                                        "FROM renting X);";
             PreparedStatement stmt = con.prepareStatement(sql_temp);
             stmt.executeUpdate();
 

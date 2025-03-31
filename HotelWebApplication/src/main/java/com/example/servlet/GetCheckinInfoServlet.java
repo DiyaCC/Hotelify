@@ -22,7 +22,7 @@ public class GetCheckinInfoServlet extends HttpServlet {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
     private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "V";     // Change if needed
+    private static final String JDBC_PASS = "Volume9794";     // Change if needed
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -215,10 +215,14 @@ public class GetCheckinInfoServlet extends HttpServlet {
             out.println("</select><br><br>");
 
             //out.println("<input type='submit' value='Confirm Check-in' />");
-
-
             out.println("</table><br>");
+
             out.println("<input type='submit' value='Confirm Check-in' />");
+            out.println("</form>");
+
+            out.println("<form method='post' action='CancelBookingServlet'>");
+            out.println("<input type='hidden' name='bookingID' value='" + bookingID + "' />");
+            out.println("<button type='submit' class='buttons' style='background-color:red;color:white;margin-top:10px;'>Cancel Booking</button>");
             out.println("</form>");
 
         } catch (Exception e) {
