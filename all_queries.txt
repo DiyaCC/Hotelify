@@ -210,9 +210,9 @@ String archiveSQL = "INSERT INTO Archive_Booking (booking_id, customer_id, room_
 DeleteChainServlet.java
 String getHotels = "SELECT hotel_id FROM hotel where chain_id = ?";
 String getHotelBookings = "SELECT * FROM booking WHERE hotel_id = ?";
-String addToArchive = "INSERT INTO archive_booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) VALUES (?,?,?,?,?,?,?)";
 String getHotelRentings = "SELECT * FROM renting WHERE hotel_id = ?";
-String addToArchive = "INSERT INTO archive_renting VALUES (?,?,?,?,?,?,?,?,?)";
+Sgtring cancelledSQL = "UPDATE booking SET cancelled = ? WHERE booking_id = ?";
+String cancelledSQL2 = "UPDATE renting SET cancelled = ? WHERE renting_id = ?";
 String deleteHotels = "DELETE FROM hotel WHERE chain_id = ?";
 String deleteChain = "DELETE from hotel_chain where chain_id=?";
 
@@ -222,13 +222,9 @@ String deleteChain = "DELETE from hotel_chain where chain_id=?";
 DeleteCustomer.java
 String customerID = "SELECT customer_id FROM Customer WHERE SSN=?";
 String booking = "SELECT * FROM booking WHERE customer_id=?";
-String exists = "SELECT * FROM Archive_Booking WHERE booking_id=?";
-String archive = "INSERT INTO Archive_Booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) " +
-                            "VALUES (?,?,?,?,?,?,?)";
+String cancelledSQL = "UPDATE booking SET cancelled = ? WHERE booking_id = ?";
 String renting = "SELECT * FROM renting WHERE customer_id=?";
-String exists = "SELECT * FROM Archive_Renting WHERE renting_id=?";
-String archive = "INSERT INTO Archive_Renting (renting_id, employee_id, booking_id, customer_id, room_type_id, room_id, checkin_date, checkout_date, cancelled) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+String cancelledSQL2 = "UPDATE renting SET cancelled = ? WHERE renting_id = ?";
 String customer = "DELETE FROM customer WHERE customer_id=?";
 String person = "DELETE FROM person WHERE SSN=?";
 
@@ -242,9 +238,9 @@ String getChainID = "SELECT chain_id FROM hotel where hotel_id=" + hotelID;
 String reduceNumHotels = "SELECT num_hotels FROM hotel_chain where chain_id = ?";
 String updateNumHotels = "UPDATE hotel_chain SET num_hotels = ? WHERE chain_id = ?";
 String getHotelBookings = "SELECT * FROM booking WHERE hotel_id = ?";
-String addToArchive = "INSERT INTO archive_booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) VALUES (?,?,?,?,?,?,?)";
 String getHotelRentings = "SELECT * FROM renting WHERE hotel_id = ?";
-String addToArchive = "INSERT INTO archive_renting VALUES (?,?,?,?,?,?,?,?,?)";
+String cancelledSQL = "UPDATE booking SET cancelled = ? WHERE booking_id = ?";
+String cancelledSQL2 = "UPDATE renting SET cancelled = ? WHERE renting_id = ?";
 String deleteHotel = "DELETE from hotel where hotel_id=?";
 
 

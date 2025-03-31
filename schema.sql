@@ -210,7 +210,7 @@ CREATE TABLE Booking (
 CREATE TABLE Renting (
     renting_id SERIAL,
     --
-    employee_id INT NOT NULL,
+    employee_id INT,
     booking_id INT NOT NULL,
     customer_id INT NOT NULL,
     room_type_id INT NOT NULL,
@@ -234,6 +234,7 @@ CREATE TABLE Renting (
 CREATE TABLE Archive_Booking (
     booking_id INT,
     --
+    hotel_id INT NOT NULL,
     customer_id INT NOT NULL,
     room_type_id INT NOT NULL,
     confirmation_date TIMESTAMP NOT NULL,
@@ -250,6 +251,7 @@ CREATE TABLE Archive_Renting (
     --
     employee_id INT NOT NULL,
     booking_id INT NOT NULL,
+    hotel_id INT NOT NULL,
     customer_id INT NOT NULL,
     room_type_id INT NOT NULL,
     room_id INT NOT NULL,
