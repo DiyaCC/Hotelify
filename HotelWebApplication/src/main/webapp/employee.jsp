@@ -15,6 +15,8 @@
     <a href="Hotels.jsp" class="link">Hotels</a>
     <br>
     <a href="#" id="manageBookingsLink" class="link">Manage Bookings</a>
+    <br>
+    <a href="#" id="manageRentalsLink" class="link">Manage Rentals</a>
   </div>
 </div>
 
@@ -28,8 +30,10 @@
   if (hotelID && employeeID) {
     // Get the "Manage Bookings" link element by ID
     const manageBookingsLink = document.getElementById('manageBookingsLink');
+    const manageRentalsLink = document.getElementById('manageRentalsLink');
     // Update its href to include the hotel_id and employee_id as query parameters
     manageBookingsLink.href = `manageBookings.jsp?hotel_id=${hotelID}&employee_id=${employeeID}`;
+    manageRentalsLink.href = `manageRentals.jsp?hotel_id=${hotelID}&employee_id=${employeeID}`;
   }
 </script>
 
