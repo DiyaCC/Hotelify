@@ -1,4 +1,5 @@
 package com.example.servlet;
+import com.example.util.DBConfig;
 
 import java.io.*;
 import java.sql.*;
@@ -7,9 +8,6 @@ import jakarta.servlet.http.*;
 
 @WebServlet("/RentalsByDateServlet")
 public class RentalsByDateServlet extends HttpServlet {
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
-    private static final String JDBC_USER = "postgres";
-    private static final String JDBC_PASS = "Volume9794";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
@@ -18,7 +16,7 @@ public class RentalsByDateServlet extends HttpServlet {
         String checkoutParam = request.getParameter("checkout");
         int hotelID = Integer.parseInt(request.getParameter("hotel_id"));
 
-        try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS)) {
+        try (Connection con = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD)) {
             String query;
             PreparedStatement stmt;
 

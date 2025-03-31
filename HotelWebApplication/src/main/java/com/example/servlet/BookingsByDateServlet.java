@@ -1,4 +1,5 @@
 package com.example.servlet;
+import com.example.util.DBConfig;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,9 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/bookingsByDate")
 public class BookingsByDateServlet extends HttpServlet {
 
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
-    private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Volume9794";     // Change if needed
     private Connection con = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +31,7 @@ public class BookingsByDateServlet extends HttpServlet {
 
         try{
             Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
+            con = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
             System.out.println("SQL ATTEMPT triggered with hotel_id=" + request.getParameter("hotel_id") + ", checkin=" + request.getParameter("checkin"));
             Statement dropStmt = con.createStatement();
             dropStmt.execute("DROP VIEW IF EXISTS bookingsByDate");

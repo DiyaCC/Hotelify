@@ -1,4 +1,5 @@
 package com.example.servlet;
+import com.example.util.DBConfig;
 
 import java.io.IOException;
 import java.sql.*;
@@ -8,9 +9,6 @@ import jakarta.servlet.http.*;
 
 @WebServlet("/ConfirmCheckoutServlet")
 public class ConfirmCheckoutServlet extends HttpServlet {
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
-    private static final String JDBC_USER = "postgres";
-    private static final String JDBC_PASS = "Volume9794";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -18,7 +16,7 @@ public class ConfirmCheckoutServlet extends HttpServlet {
         int rentalID = Integer.parseInt(request.getParameter("renting_id"));
         int bookingID = Integer.parseInt(request.getParameter("booking_id"));
 
-        try (Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS)) {
+        try (Connection con = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD)) {
             con.setAutoCommit(false);
 
             try {

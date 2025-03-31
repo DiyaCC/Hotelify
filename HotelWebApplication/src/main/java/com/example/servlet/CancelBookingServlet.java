@@ -1,4 +1,5 @@
 package com.example.servlet;
+import com.example.util.DBConfig;
 
 import java.io.IOException;
 import java.sql.*;
@@ -8,9 +9,6 @@ import jakarta.servlet.http.*;
 
 @WebServlet("/CancelBookingServlet")
 public class CancelBookingServlet extends HttpServlet {
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
-    private static final String JDBC_USER = "postgres";
-    private static final String JDBC_PASS = "Volume9794";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -23,7 +21,7 @@ public class CancelBookingServlet extends HttpServlet {
 
             int bookingID = Integer.parseInt(request.getParameter("bookingID"));
 
-            con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+            con = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
             con.setAutoCommit(false);
 
             try {
@@ -38,20 +36,14 @@ public class CancelBookingServlet extends HttpServlet {
                     Timestamp confirmationDate = booking.getTimestamp("confirmation_date");
                     Date checkinDate = booking.getDate("checkin_date");
                     Date checkoutDate = booking.getDate("checkout_date");
-                    Boolean cancelled = true; // mark this one as cancelled in archive
+                    boolean cancelled = true; // mark this one as cancelled in archive
 
-                    // Insert into Archive_Booking
-                    String archiveSQL = "INSERT INTO Archive_Booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?)";
-                    PreparedStatement archiveStmt = con.prepareStatement(archiveSQL);
-                    archiveStmt.setInt(1, bookingID);
-                    archiveStmt.setInt(2, customerID);
-                    archiveStmt.setInt(3, roomTypeID);
-                    archiveStmt.setTimestamp(4, confirmationDate);
-                    archiveStmt.setDate(5, checkinDate);
-                    archiveStmt.setDate(6, checkoutDate);
-                    archiveStmt.setBoolean(7, cancelled);
-                    archiveStmt.executeUpdate();
+
+                    String cancelledSQL = "UPDATE booking SET cancelled = ? WHERE booking_id = ?";
+                    PreparedStatement cancelledStmt = con.prepareStatement(cancelledSQL);
+                    cancelledStmt.setBoolean(1, cancelled);
+                    cancelledStmt.setInt(2, bookingID);
+                    cancelledStmt.executeUpdate();
 
                     // Delete from booking
                     String deleteSQL = "DELETE FROM booking WHERE booking_id = ?";

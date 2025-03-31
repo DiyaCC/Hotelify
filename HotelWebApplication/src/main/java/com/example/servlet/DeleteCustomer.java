@@ -1,4 +1,5 @@
 package com.example.servlet;
+import com.example.util.DBConfig;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,9 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/DeleteCustomer")
 public class DeleteCustomer extends HttpServlet {
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/hotels_db";
-    private static final String JDBC_USER = "postgres"; // Change if needed
-    private static final String JDBC_PASS = "Matara!92222";     // Change if needed
+
     private Connection con = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) // switch to doPost b/c form data is being sent
@@ -28,7 +27,7 @@ public class DeleteCustomer extends HttpServlet {
 
         try{
             Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotels_db", "postgres", JDBC_PASS);
+            con = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
 
             //Find customer information to get their ID
             String customerID = "SELECT customer_id FROM Customer WHERE SSN=?";
@@ -46,29 +45,16 @@ public class DeleteCustomer extends HttpServlet {
             ResultSet rs2 = pst2.executeQuery();
 
             while (rs2.next()) {
+                int bookingID = rs2.getInt("booking_id");
+                boolean cancelled = true;
 
-                //check if booking is in archive
-                String exists = "SELECT * FROM Archive_Booking WHERE booking_id=?";
-                PreparedStatement pst7 = con.prepareStatement(exists);
-                pst7.setInt(1, rs2.getInt("booking_id"));
-
-                ResultSet rs7 = pst7.executeQuery();
-
-                //if it isn't, add to archive booking
-                if (!rs7.next()) {
-                    String archive = "INSERT INTO Archive_Booking (booking_id, customer_id, room_type_id, confirmation_date, checkin_date, checkout_date, cancelled) " +
-                            "VALUES (?,?,?,?,?,?,?)";
-                    PreparedStatement pst3 = con.prepareStatement(archive);
-                    pst3.setInt(1, rs2.getInt("booking_id"));
-                    pst3.setInt(2, customer_id);
-                    pst3.setInt(3, rs2.getInt("room_type_id"));
-                    pst3.setDate(4, rs2.getDate("confirmation_date"));
-                    pst3.setDate(5, rs2.getDate("checkin_date"));
-                    pst3.setDate(6, rs2.getDate("checkout_date"));
-                    pst3.setBoolean(7, rs2.getBoolean("cancelled"));
-                    pst3.executeUpdate();
-                }
+                String cancelledSQL = "UPDATE booking SET cancelled = ? WHERE booking_id = ?";
+                PreparedStatement cancelledStmt = con.prepareStatement(cancelledSQL);
+                cancelledStmt.setBoolean(1, cancelled);
+                cancelledStmt.setInt(2, bookingID);
+                cancelledStmt.executeUpdate();
             }
+
             //get list of rentings
             String renting = "SELECT * FROM renting WHERE customer_id=?";
             PreparedStatement pst4 = con.prepareStatement(renting);
@@ -77,28 +63,14 @@ public class DeleteCustomer extends HttpServlet {
 
             while (rs4.next()) {
 
-                //check if renting is in archive
-                String exists = "SELECT * FROM Archive_Renting WHERE renting_id=?";
-                PreparedStatement pst8 = con.prepareStatement(exists);
-                pst8.setInt(1, rs4.getInt("renting_id"));
-                ResultSet rs8 = pst8.executeQuery();
+                int rentingID = rs4.getInt("renting_id");
+                boolean cancelled = true;
 
-                //if it isn't, add it
-                if (!rs8.next()) {
-                    String archive = "INSERT INTO Archive_Renting (renting_id, employee_id, booking_id, customer_id, room_type_id, room_id, checkin_date, checkout_date, cancelled) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    PreparedStatement pst5 = con.prepareStatement(archive);
-                    pst5.setInt(1, rs4.getInt("renting_id"));
-                    pst5.setInt(2, rs4.getInt("employee_id"));
-                    pst5.setInt(3, rs4.getInt("booking_id"));
-                    pst5.setInt(4, rs4.getInt("customer_id"));
-                    pst5.setInt(5, rs4.getInt("room_type_id"));
-                    pst5.setInt(6, rs4.getInt("room_id"));
-                    pst5.setDate(7, rs4.getDate("checkin_date"));
-                    pst5.setDate(8, rs4.getDate("checkout_date"));
-                    pst5.setBoolean(9, rs4.getBoolean("cancelled"));
-                    pst5.executeUpdate();
-                }
+                String cancelledSQL2 = "UPDATE renting SET cancelled = ? WHERE renting_id = ?";
+                PreparedStatement cancelledStmt2 = con.prepareStatement(cancelledSQL2);
+                cancelledStmt2.setBoolean(1, cancelled);
+                cancelledStmt2.setInt(2, rentingID);
+                cancelledStmt2.executeUpdate();
             }
 
             //delete customer
