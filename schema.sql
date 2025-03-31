@@ -260,19 +260,22 @@ CREATE TABLE Archive_Renting (
     PRIMARY KEY(renting_id)
 );
 
--- Index for booking availability lookups
+-- Indexes for joins via SSN
+CREATE INDEX index_person_ssn ON person(ssn);
+CREATE INDEX index_customer_ssn ON customer(ssn);
+CREATE INDEX index_employee_ssn ON employee(ssn);
+
+-- Index for queries on rooms
+CREATE INDEX index_room_hotel_type
+    ON room(hotel_id, room_type_id);
+
+-- Index for queries on room_type availability when booking
 CREATE INDEX index_booking_hotel_room_dates
 ON booking(hotel_id, room_type_id, checkin_date, checkout_date);
 
--- Index for renting overlap date checks
+-- Index for queries on room availability when checking in
 CREATE INDEX index_renting_room_dates
 ON renting(room_id, checkin_date, checkout_date);
 
--- Index for room availability by hotel and type
-CREATE INDEX index_room_hotel_type
-ON room(hotel_id, room_type_id);
 
--- Indexes for customer-person join via SSN
-CREATE INDEX index_customer_ssn ON customer(ssn);
-CREATE INDEX index_person_ssn ON person(ssn);
 
